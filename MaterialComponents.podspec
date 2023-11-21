@@ -11,7 +11,7 @@ Pod::Spec.new do |mdc|
                        :tag => "v#{mdc.version}" }
   mdc.platform     = :ios
   mdc.requires_arc = true
-  mdc.ios.deployment_target = '11.0'
+  mdc.ios.deployment_target = '12.0'
 
   # # Subspec explanation
   #
@@ -171,7 +171,7 @@ Pod::Spec.new do |mdc|
   end
 
   mdc.subspec "AppBar+Theming" do |extension|
-    extension.ios.deployment_target = '10.0'
+    extension.ios.deployment_target = '12.0'
     extension.public_header_files = "components/#{extension.base_name.split('+')[0]}/src/#{extension.base_name.split('+')[1]}/*.h"
     extension.source_files = "components/#{extension.base_name.split('+')[0]}/src/#{extension.base_name.split('+')[1]}/*.{h,m}", "components/#{extension.base_name.split('+')[0]}/src/#{extension.base_name.split('+')[1]}/private/*.{h,m}"
     extension.dependency "MaterialComponents/#{extension.base_name.split('+')[0]}"
@@ -179,7 +179,7 @@ Pod::Spec.new do |mdc|
   end
 
   mdc.subspec "AppBar+ColorThemer" do |extension|
-    extension.ios.deployment_target = '10.0'
+    extension.ios.deployment_target = '12.0'
     extension.public_header_files = [
       "components/#{extension.base_name.split('+')[0]}/src/#{extension.base_name.split('+')[1]}/*.h"
     ]
@@ -193,7 +193,7 @@ Pod::Spec.new do |mdc|
   end
 
   mdc.subspec "AppBar+TypographyThemer" do |extension|
-    extension.ios.deployment_target = '10.0'
+    extension.ios.deployment_target = '12.0'
     extension.public_header_files = [
       "components/#{extension.base_name.split('+')[0]}/src/#{extension.base_name.split('+')[1]}/*.h"
     ]
@@ -208,7 +208,7 @@ Pod::Spec.new do |mdc|
   # Availability
 
   mdc.subspec "Availability" do |extension| 
-    extension.ios.deployment_target = '10.0'
+    extension.ios.deployment_target = '12.0'
     extension.public_header_files = "components/#{extension.base_name}/src/*.h"
     extension.source_files = "components/#{extension.base_name}/src/*.{h,m}"
   end
@@ -235,7 +235,7 @@ Pod::Spec.new do |mdc|
   end
 
   mdc.subspec "Banner+Theming" do |extension|
-    extension.ios.deployment_target = '10.0'
+    extension.ios.deployment_target = '12.0'
     extension.public_header_files = "components/#{extension.base_name.split('+')[0]}/src/#{extension.base_name.split('+')[1]}/*.h"
     extension.source_files = [
       "components/#{extension.base_name.split('+')[0]}/src/#{extension.base_name.split('+')[1]}/*.{h,m}",
@@ -294,7 +294,8 @@ Pod::Spec.new do |mdc|
     component.dependency "MaterialComponents/Shadow"
     component.dependency "MaterialComponents/ShadowElevations"
     component.dependency "MaterialComponents/ShadowLayer"
-    component.dependency "MaterialComponents/Typography"
+    component.dependency "MaterialComponents/Badges"
+   component.dependency   "MaterialComponents/Typography"
     component.dependency "MaterialComponents/private/Math"
 
     component.test_spec 'UnitTests' do |unit_tests|
@@ -357,7 +358,7 @@ Pod::Spec.new do |mdc|
   end
 
   mdc.subspec "BottomSheet+ShapeThemer" do |extension|
-    extension.ios.deployment_target = '10.0'
+    extension.ios.deployment_target = '12.0'
     extension.public_header_files = [
       "components/#{extension.base_name.split('+')[0]}/src/#{extension.base_name.split('+')[1]}/*.h"
     ]
@@ -372,10 +373,12 @@ Pod::Spec.new do |mdc|
   # Buttons
 
   mdc.subspec "Buttons" do |component|
-    component.public_header_files = "components/#{component.base_name}/src/*.h"
+    component.public_header_files = ["components/#{component.base_name}/src/*.h", "components/M3CButton/src/*.h"]
     component.source_files = [
       "components/#{component.base_name}/src/*.{h,m}",
-      "components/#{component.base_name}/src/private/*.{h,m}"
+      "components/#{component.base_name}/src/private/*.{h,m}",
+      "components/M3CButton/src/*.{h,m}",
+      "components/M3CButton/src/private/*.{h,m}"
     ]
 
     component.dependency "MDFInternationalization", "~> 3.0"
@@ -404,7 +407,7 @@ Pod::Spec.new do |mdc|
   end
 
   mdc.subspec "Buttons+ColorThemer" do |extension|
-    extension.ios.deployment_target = '10.0'
+    extension.ios.deployment_target = '12.0'
     extension.public_header_files = [
       "components/#{extension.base_name.split('+')[0]}/src/#{extension.base_name.split('+')[1]}/*.h"
     ]
@@ -417,7 +420,7 @@ Pod::Spec.new do |mdc|
   end
 
   mdc.subspec "Buttons+ShapeThemer" do |extension|
-    extension.ios.deployment_target = '10.0'
+    extension.ios.deployment_target = '12.0'
     extension.public_header_files = [
       "components/#{extension.base_name.split('+')[0]}/src/#{extension.base_name.split('+')[1]}/*.h"
     ]
@@ -430,7 +433,7 @@ Pod::Spec.new do |mdc|
   end
 
   mdc.subspec "Buttons+TypographyThemer" do |extension|
-    extension.ios.deployment_target = '10.0'
+    extension.ios.deployment_target = '12.0'
     extension.public_header_files = [
       "components/#{extension.base_name.split('+')[0]}/src/#{extension.base_name.split('+')[1]}/*.h"
     ]
@@ -443,7 +446,7 @@ Pod::Spec.new do |mdc|
   end
 
   mdc.subspec "Buttons+ButtonThemer" do |extension|
-    extension.ios.deployment_target = '10.0'
+    extension.ios.deployment_target = '12.0'
     extension.public_header_files = [
       "components/#{extension.base_name.split('+')[0]}/src/#{extension.base_name.split('+')[1]}/*.h"
     ]
@@ -459,7 +462,7 @@ Pod::Spec.new do |mdc|
   end
 
   mdc.subspec "Buttons+Theming" do |extension|
-    extension.ios.deployment_target = '10.0'
+    extension.ios.deployment_target = '12.0'
     extension.public_header_files = "components/#{extension.base_name.split('+')[0]}/src/#{extension.base_name.split('+')[1]}/*.h"
     extension.source_files = [
     "components/#{extension.base_name.split('+')[0]}/src/#{extension.base_name.split('+')[1]}/*.{h,m}",
@@ -522,7 +525,7 @@ Pod::Spec.new do |mdc|
   end
 
   mdc.subspec "Cards+Theming" do |extension|
-    extension.ios.deployment_target = '10.0'
+    extension.ios.deployment_target = '12.0'
     extension.public_header_files = "components/#{extension.base_name.split('+')[0]}/src/#{extension.base_name.split('+')[1]}/*.h"
     extension.source_files = [
       "components/#{extension.base_name.split('+')[0]}/src/#{extension.base_name.split('+')[1]}/*.{h,m}",
@@ -563,7 +566,7 @@ Pod::Spec.new do |mdc|
   end
 
   mdc.subspec "Chips+Theming" do |extension|
-    extension.ios.deployment_target = '10.0'
+    extension.ios.deployment_target = '12.0'
     extension.public_header_files = "components/#{extension.base_name.split('+')[0]}/src/#{extension.base_name.split('+')[1]}/*.h"
     extension.source_files = [
       "components/#{extension.base_name.split('+')[0]}/src/#{extension.base_name.split('+')[1]}/*.{h,m}",
@@ -688,7 +691,7 @@ Pod::Spec.new do |mdc|
   end
 
   mdc.subspec "Dialogs+ColorThemer" do |extension|
-    extension.ios.deployment_target = '10.0'
+    extension.ios.deployment_target = '12.0'
     extension.public_header_files = [
       "components/#{extension.base_name.split('+')[0]}/src/#{extension.base_name.split('+')[1]}/*.h"
     ]
@@ -702,7 +705,7 @@ Pod::Spec.new do |mdc|
   end
 
   mdc.subspec "Dialogs+TypographyThemer" do |extension|
-    extension.ios.deployment_target = '10.0'
+    extension.ios.deployment_target = '12.0'
     extension.public_header_files = [
       "components/#{extension.base_name.split('+')[0]}/src/#{extension.base_name.split('+')[1]}/*.h"
     ]
@@ -716,7 +719,7 @@ Pod::Spec.new do |mdc|
   end
 
   mdc.subspec "Dialogs+Theming" do |extension|
-    extension.ios.deployment_target = '10.0'
+    extension.ios.deployment_target = '12.0'
     extension.public_header_files = "components/#{extension.base_name.split('+')[0]}/src/#{extension.base_name.split('+')[1]}/*.h"
     extension.source_files = [
     "components/#{extension.base_name.split('+')[0]}/src/#{extension.base_name.split('+')[1]}/*.{h,m}",
@@ -774,7 +777,7 @@ Pod::Spec.new do |mdc|
   end
 
   mdc.subspec "FeatureHighlight+ColorThemer" do |extension|
-    extension.ios.deployment_target = '10.0'
+    extension.ios.deployment_target = '12.0'
     extension.public_header_files = [
       "components/#{extension.base_name.split('+')[0]}/src/#{extension.base_name.split('+')[1]}/*.h"
     ]
@@ -817,7 +820,7 @@ Pod::Spec.new do |mdc|
   end
 
   mdc.subspec "FlexibleHeader+ShiftBehavior" do |extension|
-    extension.ios.deployment_target = '10.0'
+    extension.ios.deployment_target = '12.0'
     extension.public_header_files = [
       "components/#{extension.base_name.split('+')[0]}/src/#{extension.base_name.split('+')[1]}/*.h"
     ]
@@ -827,7 +830,7 @@ Pod::Spec.new do |mdc|
   end
 
   mdc.subspec "FlexibleHeader+ShiftBehaviorEnabledWithStatusBar" do |extension|
-    extension.ios.deployment_target = '10.0'
+    extension.ios.deployment_target = '12.0'
     extension.public_header_files = [
       "components/#{extension.base_name.split('+')[0]}/src/#{extension.base_name.split('+')[1]}/*.h"
     ]
@@ -921,7 +924,7 @@ Pod::Spec.new do |mdc|
   end
 
   mdc.subspec "List+Theming" do |extension|
-    extension.ios.deployment_target = '10.0'
+    extension.ios.deployment_target = '12.0'
     extension.public_header_files = "components/#{extension.base_name.split('+')[0]}/src/#{extension.base_name.split('+')[1]}/*.h"
     extension.source_files = [
       "components/#{extension.base_name.split('+')[0]}/src/#{extension.base_name.split('+')[1]}/*.{h,m}",
@@ -958,7 +961,7 @@ Pod::Spec.new do |mdc|
   end
 
   mdc.subspec "NavigationBar+ColorThemer" do |extension|
-    extension.ios.deployment_target = '10.0'
+    extension.ios.deployment_target = '12.0'
     extension.public_header_files = [
       "components/#{extension.base_name.split('+')[0]}/src/#{extension.base_name.split('+')[1]}/*.h"
     ]
@@ -971,7 +974,7 @@ Pod::Spec.new do |mdc|
   end
 
   mdc.subspec "NavigationBar+TypographyThemer" do |extension|
-    extension.ios.deployment_target = '10.0'
+    extension.ios.deployment_target = '12.0'
     extension.public_header_files = [
       "components/#{extension.base_name.split('+')[0]}/src/#{extension.base_name.split('+')[1]}/*.h"
     ]
@@ -1010,7 +1013,7 @@ Pod::Spec.new do |mdc|
   end
 
   mdc.subspec "NavigationDrawer+ColorThemer" do |extension|
-    extension.ios.deployment_target = '10.0'
+    extension.ios.deployment_target = '12.0'
     extension.public_header_files = [
       "components/#{extension.base_name.split('+')[0]}/src/#{extension.base_name.split('+')[1]}/*.h"
     ]
@@ -1023,7 +1026,7 @@ Pod::Spec.new do |mdc|
   end
 
   mdc.subspec "NavigationDrawer+Theming" do |extension|
-    extension.ios.deployment_target = '10.0'
+    extension.ios.deployment_target = '12.0'
     extension.public_header_files = "components/#{extension.base_name.split('+')[0]}/src/#{extension.base_name.split('+')[1]}/*.h"
     extension.source_files = [
     "components/#{extension.base_name.split('+')[0]}/src/#{extension.base_name.split('+')[1]}/*.{h,m}",
@@ -1119,7 +1122,7 @@ Pod::Spec.new do |mdc|
   end
 
   mdc.subspec "ProgressView+Theming" do |extension|
-    extension.ios.deployment_target = '10.0'
+    extension.ios.deployment_target = '12.0'
     extension.public_header_files = "components/#{extension.base_name.split('+')[0]}/src/#{extension.base_name.split('+')[1]}/*.h"
     extension.source_files = [
     "components/#{extension.base_name.split('+')[0]}/src/#{extension.base_name.split('+')[1]}/*.{h,m}",
@@ -1154,6 +1157,27 @@ Pod::Spec.new do |mdc|
       ]
       unit_tests.resources = "components/#{component.base_name}/tests/unit/resources/*"
     end
+  end
+
+
+  # Badges
+
+  mdc.subspec "Badges" do |component|
+    component.public_header_files = "components/#{component.base_name}/src/*.h"
+    component.source_files = "components/#{component.base_name}/src/*.{h,m}", "components/#{component.base_name}/src/Appearance/*.{h,m}"
+
+    # component.dependency "MaterialComponents/AnimationTiming"
+    # component.dependency "MaterialComponents/Availability"
+    # component.dependency "MaterialComponents/private/Color"
+    # component.dependency "MaterialComponents/private/Math"
+
+    # component.test_spec 'UnitTests' do |unit_tests|
+    #   unit_tests.source_files = [
+    #     "components/#{component.base_name}/tests/unit/*.{h,m,swift}",
+    #     "components/#{component.base_name}/tests/unit/supplemental/*.{h,m,swift}"
+    #   ]
+    #   unit_tests.resources = "components/#{component.base_name}/tests/unit/resources/*"
+    # end
   end
 
   # Shadow
@@ -1263,7 +1287,7 @@ Pod::Spec.new do |mdc|
   end
 
   mdc.subspec "Slider+ColorThemer" do |extension|
-    extension.ios.deployment_target = '10.0'
+    extension.ios.deployment_target = '12.0'
     extension.public_header_files = [
       "components/#{extension.base_name.split('+')[0]}/src/#{extension.base_name.split('+')[1]}/*.h"
     ]
@@ -1330,6 +1354,7 @@ Pod::Spec.new do |mdc|
     component.dependency "MaterialComponents/Ripple"
     component.dependency "MaterialComponents/ShadowElevations"
     component.dependency "MaterialComponents/ShadowLayer"
+    component.dependency "MaterialComponents/Badges"
     component.dependency "MaterialComponents/Typography"
     component.dependency "MaterialComponents/private/Math"
 
@@ -1345,7 +1370,7 @@ Pod::Spec.new do |mdc|
   end
 
   mdc.subspec "Tabs+TypographyThemer" do |extension|
-    extension.ios.deployment_target = '10.0'
+    extension.ios.deployment_target = '12.0'
     extension.public_header_files = [
       "components/#{extension.base_name.split('+')[0]}/src/#{extension.base_name.split('+')[1]}/*.h"
     ]
@@ -1358,7 +1383,7 @@ Pod::Spec.new do |mdc|
   end
 
   mdc.subspec "Tabs+Theming" do |extension|
-    extension.ios.deployment_target = '10.0'
+    extension.ios.deployment_target = '12.0'
     extension.public_header_files = "components/#{extension.base_name.split('+')[0]}/src/#{extension.base_name.split('+')[1]}/*.h"
     extension.source_files = [
       "components/#{extension.base_name.split('+')[0]}/src/#{extension.base_name.split('+')[1]}/*.{h,m}",
@@ -1376,7 +1401,7 @@ Pod::Spec.new do |mdc|
   end
 
   mdc.subspec "Tabs+TabBarView" do |extension|
-    extension.ios.deployment_target = '10.0'
+    extension.ios.deployment_target = '12.0'
     extension.public_header_files = "components/#{extension.base_name.split('+')[0]}/src/#{extension.base_name.split('+')[1]}/*.h"
     extension.source_files = [
       "components/#{extension.base_name.split('+')[0]}/src/#{extension.base_name.split('+')[1]}/*.{h,m}",
@@ -1400,7 +1425,7 @@ Pod::Spec.new do |mdc|
   end
 
   mdc.subspec "Tabs+TabBarViewTheming" do |extension|
-    extension.ios.deployment_target = '10.0'
+    extension.ios.deployment_target = '12.0'
     extension.public_header_files = "components/#{extension.base_name.split('+')[0]}/src/#{extension.base_name.split('+')[1]}/*.h"
     extension.source_files = [
       "components/#{extension.base_name.split('+')[0]}/src/#{extension.base_name.split('+')[1]}/*.{h,m}",
@@ -1682,7 +1707,7 @@ Pod::Spec.new do |mdc|
   end
 
   mdc.subspec "TextFields+ColorThemer" do |extension|
-    extension.ios.deployment_target = '10.0'
+    extension.ios.deployment_target = '12.0'
     extension.public_header_files = [
       "components/#{extension.base_name.split('+')[0]}/src/#{extension.base_name.split('+')[1]}/*.h"
     ]
@@ -1695,7 +1720,7 @@ Pod::Spec.new do |mdc|
   end
 
   mdc.subspec "TextFields+Theming" do |extension|
-    extension.ios.deployment_target = '10.0'
+    extension.ios.deployment_target = '12.0'
     extension.public_header_files = "components/#{extension.base_name.split('+')[0]}/src/#{extension.base_name.split('+')[1]}/*.h"
     extension.source_files = [
     "components/#{extension.base_name.split('+')[0]}/src/#{extension.base_name.split('+')[1]}/*.{h,m}",
@@ -1733,6 +1758,8 @@ Pod::Spec.new do |mdc|
     component.public_header_files = "components/#{component.base_name}/src/*.h"
     component.source_files = [
       "components/#{component.base_name}/src/*.{h,m}",
+      "components/#{component.base_name}/src/FontScaler/*.{h,m}",
+      "components/#{component.base_name}/src/FontLoader/*.{h,m}",
       "components/#{component.base_name}/src/private/*.{h,m}"
     ]
 
@@ -1815,7 +1842,7 @@ Pod::Spec.new do |mdc|
       end
     end
     scheme_spec.subspec "Typography+BasicFontScheme" do |extension|
-      extension.ios.deployment_target = '10.0'
+      extension.ios.deployment_target = '12.0'
       extension.public_header_files = "components/schemes/#{extension.base_name.split('+')[0]}/src/#{extension.base_name.split('+')[1]}/*.h"
       extension.source_files = [
         "components/schemes/#{extension.base_name.split('+')[0]}/src/#{extension.base_name.split('+')[1]}/*.{h,m}",
@@ -1823,7 +1850,7 @@ Pod::Spec.new do |mdc|
       ]
     end
     scheme_spec.subspec "Typography+Scheming" do |extension|
-      extension.ios.deployment_target = '10.0'
+      extension.ios.deployment_target = '12.0'
       extension.public_header_files = "components/schemes/#{extension.base_name.split('+')[0]}/src/#{extension.base_name.split('+')[1]}/*.h"
       extension.source_files = [
         "components/schemes/#{extension.base_name.split('+')[0]}/src/#{extension.base_name.split('+')[1]}/*.{h,m}",

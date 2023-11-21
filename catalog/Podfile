@@ -5,7 +5,7 @@ project 'MDCCatalog.xcodeproj'
 # install! 'cocoapods', :disable_input_output_paths => true
 
 target "MDCCatalog" do
-  platform :ios, '11.0'
+  platform :ios, '12.0'
   project 'MDCCatalog.xcodeproj'
   pod 'MaterialComponentsExamples', :path => '../'
   pod 'MaterialComponents', :path => '../', :testspecs => [
@@ -17,7 +17,6 @@ target "MDCCatalog" do
     'BottomAppBar/UnitTests',
     'BottomNavigation/UnitTests',
     'BottomNavigation+BottomNavigationController/UnitTests',
-    'BottomNavigation+Theming/UnitTests',
     'BottomSheet/UnitTests',
     'ButtonBar/UnitTests',
     'Buttons/UnitTests',
@@ -55,7 +54,6 @@ target "MDCCatalog" do
     'schemes/Container/UnitTests',
     'schemes/Shape/UnitTests',
     'schemes/Typography/UnitTests',
-    'ShadowElevations/UnitTests',
     'ShadowLayer/UnitTests',
     'ShapeLibrary/UnitTests',
     'Shapes/UnitTests',
@@ -64,7 +62,6 @@ target "MDCCatalog" do
     'Tabs/UnitTests',
     'Tabs+Theming/UnitTests',
     'Tabs+TabBarView/UnitTests',
-    'TextFields/UnitTests',
     'TextControls+BaseTextAreas/UnitTests',
     'TextControls+BaseTextFields/UnitTests',
     'TextControls+FilledTextAreas/UnitTests',
@@ -88,7 +85,7 @@ target "MDCCatalog" do
 end
 
 target "MDCActionExtension" do
-  platform :ios, '11.0'
+  platform :ios, '12.0'
   project 'MDCCatalog.xcodeproj'
   pod 'MaterialComponentsExamples', :path => '../'
   pod 'MaterialComponents', :path => '../'
@@ -99,7 +96,7 @@ target "MDCActionExtension" do
 end
 
 target "MDCDragons" do
-  platform :ios, '11.0'
+  platform :ios, '12.0'
   project 'MDCDragons.xcodeproj'
   pod 'CatalogByConvention', "~> 2.5"
   pod 'MaterialComponents', :path => '../'
