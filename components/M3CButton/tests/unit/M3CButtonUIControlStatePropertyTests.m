@@ -15,6 +15,7 @@
 #import <XCTest/XCTest.h>
 
 #import "M3CButton.h"
+#import "MDCShadow.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -70,14 +71,24 @@ static NSString *controlStateDescription(UIControlState controlState) {
 
 - (nullable UIColor *)backgroundColorForState:(UIControlState)state;
 - (nullable UIColor *)borderColorForState:(UIControlState)state;
+- (nullable MDCShadow *)shadowForState:(UIControlState)state;
+- (nullable UIColor *)tintColorForState:(UIControlState)state;
 
 @end
 
-@interface M3CButtonTests : XCTestCase
+@interface MDCShadow (testing)
+- (instancetype)initWithColor:(UIColor *)color
+                      opacity:(CGFloat)opacity
+                       radius:(CGFloat)radius
+                       offset:(CGSize)offset
+                       spread:(CGFloat)spread;
+@end
+
+@interface M3CButtonUIControlStatePropertyTests : XCTestCase
 @property(nonatomic, strong, nullable) M3CButton *button;
 @end
 
-@implementation M3CButtonTests
+@implementation M3CButtonUIControlStatePropertyTests
 
 - (void)setUp {
   [super setUp];
@@ -89,6 +100,23 @@ static NSString *controlStateDescription(UIControlState controlState) {
   self.button = nil;
 
   [super tearDown];
+}
+
+- (void)testShadowColorForState {
+  for (NSUInteger state = 0; state <= kNumUIControlStates; ++state) {
+    // Given
+    MDCShadow *shadow = [[MDCShadow alloc] initWithColor:randomColor()
+                                                 opacity:10
+                                                  radius:10
+                                                  offset:CGSizeZero
+                                                  spread:10];
+    // When
+    [self.button setShadow:shadow forState:state];
+
+    // Then
+    XCTAssertEqualObjects([self.button shadowForState:state], shadow, @"for control state:%@ ",
+                          controlStateDescription(state));
+  }
 }
 
 - (void)testBorderColorForState {
@@ -163,6 +191,56 @@ static NSString *controlStateDescription(UIControlState controlState) {
     XCTAssertEqualObjects([testButton borderColorForState:state],
                           [uiButton titleColorForState:state], @"for control state:%@ ",
                           controlStateDescription(state));
+  }
+}
+
+- (void)testTintColorForState {
+  for (NSUInteger controlState = 0; controlState < kNumUIControlStates; ++controlState) {
+    // Given
+    UIColor *color = randomColor();
+
+    // When
+    [self.button setTintColor:color forState:controlState];
+
+    // Then
+    XCTAssertEqualObjects([self.button tintColorForState:controlState], color,
+                          @"for control state:%@ ", controlStateDescription(controlState));
+  }
+}
+
+- (void)testTintColorForStateFallbackBehavior {
+  // When
+  [self.button setTintColor:UIColor.purpleColor forState:UIControlStateNormal];
+
+  // Then
+  for (NSUInteger controlState = 0; controlState < kNumUIControlStates; ++controlState) {
+    XCTAssertEqualObjects([self.button tintColorForState:controlState], UIColor.purpleColor);
+  }
+}
+
+- (void)testTintColorForStateUpdatesTintColor {
+  // Given
+  for (NSUInteger controlState = 0; controlState <= kNumUIControlStates; ++controlState) {
+    // Disabling the button removes any highlighted state
+    UIControlState testState = controlState;
+    if ((testState & UIControlStateDisabled) == UIControlStateDisabled) {
+      testState &= ~UIControlStateHighlighted;
+    }
+    BOOL isDisabled = (testState & UIControlStateDisabled) == UIControlStateDisabled;
+    BOOL isSelected = (testState & UIControlStateSelected) == UIControlStateSelected;
+    BOOL isHighlighted = (testState & UIControlStateHighlighted) == UIControlStateHighlighted;
+
+    // Also given
+    UIColor *color = randomColor();
+    [self.button setTintColor:color forState:testState];
+
+    // When
+    self.button.enabled = !isDisabled;
+    self.button.selected = isSelected;
+    self.button.highlighted = isHighlighted;
+
+    XCTAssertEqualObjects(self.button.tintColor, color, @"for control state:%@ ",
+                          controlStateDescription(controlState));
   }
 }
 

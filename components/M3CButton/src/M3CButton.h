@@ -36,15 +36,6 @@ __attribute__((objc_subclassing_restricted))
 - (void)setBorderColor:(nullable UIColor *)borderColor forState:(UIControlState)state;
 
 /**
- Sets the shadow color for a particular control state. Sets the @c shadowColor
- of the layer.
-
- @param shadowColor The shadow color to set.
- @param state The state to set.
-*/
-- (void)setShadowColor:(nullable UIColor *)shadowColor forState:(UIControlState)state;
-
-/**
  Sets the shadow for a particular control state. Sets the @c shadow of the
  layer.
 
@@ -79,6 +70,11 @@ __attribute__((objc_subclassing_restricted))
 @property(nonatomic) CGFloat minimumHeight;
 
 /**
+ The minimum width of the button.
+*/
+@property(nonatomic) CGFloat minimumWidth;
+
+/**
  Is the button a capsule shape.
 */
 @property(nonatomic) BOOL isCapsuleShape;
@@ -87,6 +83,18 @@ __attribute__((objc_subclassing_restricted))
  The time interval used to animate the transintion between button states.
 */
 @property(nonatomic) NSTimeInterval animationDuration;
+
+/**
+ Should the button's label be rendered on multiple lines. If you set this
+ property to YES, make sure that your button has either its
+ @c titleLabel.preferredMaxLayoutWidth property set, or that the button's frame
+ width is set as desired.
+ Otherwise, the button will not be able to calculate a multiline layout.
+
+ @note If using @c isCapsuleShape enabled with this API be sure to consider accessibility needs as
+ the label may extend outside the cut corner.
+ */
+@property(nonatomic) BOOL textCanWrap;
 
 @end
 

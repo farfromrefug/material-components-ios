@@ -18,15 +18,14 @@
 
 #import "../MDCSnackbarError.h"
 #import "../MDCSnackbarMessage.h"
-#import "MaterialAnimationTiming.h"
-#import "MaterialAvailability.h"
+#import "MDCAvailability.h"
 #import "MDCSnackbarAlignment.h"
 #import "MDCSnackbarMessageView.h"
 #import "MDCSnackbarMessageInternal.h"
 #import "MDCSnackbarMessageViewInternal.h"
-#import "MaterialApplication.h"
-#import "MaterialKeyboardWatcher.h"
-#import "MaterialOverlay.h"
+#import "UIApplication+MDCAppExtensions.h"
+#import "MDCKeyboardWatcher.h"
+#import "MDCOverlayImplementor.h"
 
 NSString *const MDCSnackbarOverlayIdentifier = @"MDCSnackbar";
 
@@ -40,6 +39,9 @@ static const CGFloat MDCSnackbarEnterStartingScale = (CGFloat)0.8;
 
 // The max ratio of the screen that a snackbar can occupy.
 static const CGFloat MDCSnackbarMaxScreenRatioToOccupy = (CGFloat)0.5;
+
+// How far from the top of the screen should the Snackbar be.
+static const CGFloat MDCSnackbarTopMargin = 8;
 
 // How far from the bottom of the screen should the Snackbar be.
 static const CGFloat MDCSnackbarBottomMargin_iPhone = 8;
@@ -70,15 +72,22 @@ static const CGFloat kMaximumHeightLegacy = 80;
 
 /**
  The layout constraint which determines how far the Snackbar is from the leading edge of the screen.
- It is active when the alignment of the parent overlay view is MDCSnackbarAlignmentLeading.
+ It is active when the alignment of the parent overlay view is
+ MDCSnackbarHorizontalAlignmentLeading.
  */
 @property(nonatomic) NSLayoutConstraint *snackbarViewLeadingConstraint;
 
 /**
  The layout constraint used to center the Snackbar.
- It is active when the alignment of the parent overlay view is MDCSnackbarAlignmentCenter.
+ It is active when the alignment of the parent overlay view is MDCSnackbarHorizontalAlignmentCenter.
  */
 @property(nonatomic) NSLayoutConstraint *snackbarViewCenterConstraint;
+
+/**
+ The layout constraint used to position the Snackbar.
+ It is active when the alignment of the parent overlay view is MDCSnackbarVerticalAlignmentTop.
+ */
+@property(nonatomic) NSLayoutConstraint *snackbarViewTopConstraint;
 
 /**
  The object which will notify us of changes in the keyboard position.
@@ -89,7 +98,7 @@ static const CGFloat kMaximumHeightLegacy = 80;
  The layout constraint which determines the bottom of the containing view. Setting the constant
  to a negative value will cause Snackbars to appear from a point above the bottom of the screen.
  */
-@property(nonatomic) NSLayoutConstraint *bottomConstraint;
+@property(nonatomic) NSLayoutConstraint *containingViewBottomConstraint;
 
 /**
  The layout constraint which determines the maximum height of the Snackbar .
@@ -117,12 +126,12 @@ static const CGFloat kMaximumHeightLegacy = 80;
 /**
  The constraint used to pin the bottom of the Snackbar to the bottom of the screen.
  */
-@property(nonatomic) NSLayoutConstraint *snackbarOnscreenConstraint;
+@property(nonatomic) NSLayoutConstraint *snackbarBottomOnscreenConstraint;
 
 /**
  The constraint used to pin the top of the Snackbar to the bottom of the screen.
  */
-@property(nonatomic) NSLayoutConstraint *snackbarOffscreenConstraint;
+@property(nonatomic, weak) NSLayoutConstraint *snackbarBottomOffscreenConstraint;
 
 /**
  The constraint used to set the leading margin spacing of the Snackbar.
@@ -161,6 +170,7 @@ static const CGFloat kMaximumHeightLegacy = 80;
                        : MDCSnackbarLegacySideMargin_CompactWidth;
     }
     _leadingMargin = _trailingMargin = sideMargin;
+    _topMargin = MDCSnackbarTopMargin;
 
     NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
 
@@ -221,19 +231,20 @@ static const CGFloat kMaximumHeightLegacy = 80;
   [self addConstraint:[NSLayoutConstraint constraintWithItem:_containingView
                                                    attribute:NSLayoutAttributeTop
                                                    relatedBy:NSLayoutRelationEqual
-                                                      toItem:self
+                                                      toItem:self.safeAreaLayoutGuide
                                                    attribute:NSLayoutAttributeTop
                                                   multiplier:1.0
                                                     constant:0]];
 
-  self.bottomConstraint = [NSLayoutConstraint constraintWithItem:_containingView
-                                                       attribute:NSLayoutAttributeBottom
-                                                       relatedBy:NSLayoutRelationEqual
-                                                          toItem:self
-                                                       attribute:NSLayoutAttributeBottom
-                                                      multiplier:1.0
-                                                        constant:-[self dynamicBottomMargin]];
-  [self addConstraint:self.bottomConstraint];
+  self.containingViewBottomConstraint =
+      [NSLayoutConstraint constraintWithItem:_containingView
+                                   attribute:NSLayoutAttributeBottom
+                                   relatedBy:NSLayoutRelationEqual
+                                      toItem:self
+                                   attribute:NSLayoutAttributeBottom
+                                  multiplier:1.0
+                                    constant:-[self dynamicBottomMargin]];
+  [self addConstraint:self.containingViewBottomConstraint];
 }
 
 - (void)updateConstraints {
@@ -290,6 +301,17 @@ static const CGFloat kMaximumHeightLegacy = 80;
 - (void)setSnackbarView:(MDCSnackbarMessageView *)snackbarView {
   if (_snackbarView != snackbarView) {
     [_snackbarView removeFromSuperview];
+
+    // Reset all constraints
+    self.snackbarViewLeadingConstraint = nil;
+    self.snackbarViewCenterConstraint = nil;
+    self.snackbarViewTopConstraint = nil;
+    self.snackbarBottomOnscreenConstraint = nil;
+    self.snackbarBottomOffscreenConstraint = nil;
+    self.snackbarLeadingMarginConstraint = nil;
+    self.snackbarTrailingMarginConstraint = nil;
+    self.maximumHeightConstraint = nil;
+
     _snackbarView = snackbarView;
 
     CGFloat bottomMargin = [self staticBottomMargin];
@@ -317,7 +339,8 @@ static const CGFloat kMaximumHeightLegacy = 80;
                                          attribute:NSLayoutAttributeCenterX
                                         multiplier:1.0
                                           constant:0];
-        self.snackbarViewCenterConstraint.active = self.alignment == MDCSnackbarAlignmentCenter;
+        self.snackbarViewCenterConstraint.active =
+            self.horizontalAlignment == MDCSnackbarHorizontalAlignmentCenter;
 
         self.snackbarViewLeadingConstraint =
             [NSLayoutConstraint constraintWithItem:snackbarView
@@ -327,7 +350,8 @@ static const CGFloat kMaximumHeightLegacy = 80;
                                          attribute:NSLayoutAttributeLeading
                                         multiplier:1.0
                                           constant:self.leadingMargin];
-        self.snackbarViewLeadingConstraint.active = self.alignment == MDCSnackbarAlignmentLeading;
+        self.snackbarViewLeadingConstraint.active =
+            self.horizontalAlignment == MDCSnackbarHorizontalAlignmentLeading;
 
         // If not full width, ensure that it doesn't get any larger than our own width.
         [container
@@ -390,31 +414,44 @@ static const CGFloat kMaximumHeightLegacy = 80;
         [container addConstraint:_snackbarTrailingMarginConstraint];
       }
 
-      _snackbarOnscreenConstraint = [NSLayoutConstraint constraintWithItem:snackbarView
-                                                                 attribute:NSLayoutAttributeBottom
-                                                                 relatedBy:NSLayoutRelationEqual
-                                                                    toItem:container
-                                                                 attribute:NSLayoutAttributeBottom
-                                                                multiplier:1.0
-                                                                  constant:-bottomMargin];
-      _snackbarOnscreenConstraint.active = !MDCSnackbarMessage.usesLegacySnackbar;
-      if (MDCSnackbarMessage.usesLegacySnackbar) {
-        _snackbarOnscreenConstraint.priority = UILayoutPriorityDefaultHigh;
-      }
-      [container addConstraint:_snackbarOnscreenConstraint];
+      _snackbarViewTopConstraint = [NSLayoutConstraint constraintWithItem:snackbarView
+                                                                attribute:NSLayoutAttributeTop
+                                                                relatedBy:NSLayoutRelationEqual
+                                                                   toItem:container
+                                                                attribute:NSLayoutAttributeTop
+                                                               multiplier:1.0
+                                                                 constant:self.topMargin];
+      _snackbarViewTopConstraint.active = self.verticalAlignment == MDCSnackbarVerticalAlignmentTop;
 
-      _snackbarOffscreenConstraint = [NSLayoutConstraint constraintWithItem:snackbarView
-                                                                  attribute:NSLayoutAttributeTop
-                                                                  relatedBy:NSLayoutRelationEqual
-                                                                     toItem:container
-                                                                  attribute:NSLayoutAttributeBottom
-                                                                 multiplier:1.0
-                                                                   constant:-bottomMargin];
-      _snackbarOffscreenConstraint.active = MDCSnackbarMessage.usesLegacySnackbar;
-      if (!MDCSnackbarMessage.usesLegacySnackbar) {
-        _snackbarOffscreenConstraint.priority = UILayoutPriorityDefaultLow;
+      _snackbarBottomOnscreenConstraint =
+          [NSLayoutConstraint constraintWithItem:snackbarView
+                                       attribute:NSLayoutAttributeBottom
+                                       relatedBy:NSLayoutRelationEqual
+                                          toItem:container
+                                       attribute:NSLayoutAttributeBottom
+                                      multiplier:1.0
+                                        constant:-bottomMargin];
+      _snackbarBottomOnscreenConstraint.active =
+          !MDCSnackbarMessage.usesLegacySnackbar &&
+          self.verticalAlignment == MDCSnackbarVerticalAlignmentBottom;
+      if (MDCSnackbarMessage.usesLegacySnackbar) {
+        _snackbarBottomOnscreenConstraint.priority = UILayoutPriorityDefaultHigh;
       }
-      [container addConstraint:_snackbarOffscreenConstraint];
+
+      _snackbarBottomOffscreenConstraint =
+          [NSLayoutConstraint constraintWithItem:snackbarView
+                                       attribute:NSLayoutAttributeTop
+                                       relatedBy:NSLayoutRelationEqual
+                                          toItem:container
+                                       attribute:NSLayoutAttributeBottom
+                                      multiplier:1.0
+                                        constant:-bottomMargin];
+      _snackbarBottomOffscreenConstraint.active =
+          MDCSnackbarMessage.usesLegacySnackbar &&
+          self.verticalAlignment == MDCSnackbarVerticalAlignmentBottom;
+      if (!MDCSnackbarMessage.usesLegacySnackbar) {
+        _snackbarBottomOffscreenConstraint.priority = UILayoutPriorityDefaultLow;
+      }
 
       // Always limit the height of the Snackbar.
       self.maximumHeightConstraint =
@@ -485,7 +522,8 @@ static const CGFloat kMaximumHeightLegacy = 80;
 }
 
 - (BOOL)anchoredToScreenBottom {
-  return [self dynamicBottomMargin] == 0;
+  return [self dynamicBottomMargin] == 0 &&
+         self.verticalAlignment == MDCSnackbarVerticalAlignmentBottom;
 }
 
 #pragma mark - Safe Area Insets
@@ -508,7 +546,7 @@ static const CGFloat kMaximumHeightLegacy = 80;
                 animated:(BOOL)animated
               completion:(void (^)(void))completion {
   self.snackbarView = snackbarView;  // Install the Snackbar.
-  self.bottomConstraint.constant = -self.dynamicBottomMargin;
+  self.containingViewBottomConstraint.constant = -self.dynamicBottomMargin;
 
   if (animated && snackbarView) {
     [self slideInMessageView:snackbarView completion:completion];
@@ -550,7 +588,7 @@ static const CGFloat kMaximumHeightLegacy = 80;
     duration = onscreen ? MDCSnackbarEnterTransitionDuration : MDCSnackbarExitTransitionDuration;
   }
   CAMediaTimingFunction *timingFunction =
-      [CAMediaTimingFunction mdc_functionWithType:MDCAnimationTimingFunctionEaseInOut];
+      [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
   [CATransaction begin];
   [CATransaction setAnimationTimingFunction:timingFunction];
   [CATransaction setCompletionBlock:completion];
@@ -560,8 +598,8 @@ static const CGFloat kMaximumHeightLegacy = 80;
   animationsGroup.removedOnCompletion = NO;
 
   if (MDCSnackbarMessage.usesLegacySnackbar) {
-    _snackbarOnscreenConstraint.active = onscreen;
-    _snackbarOffscreenConstraint.active = !onscreen;
+    _snackbarBottomOnscreenConstraint.active = onscreen;
+    _snackbarBottomOffscreenConstraint.active = !onscreen;
     [_containingView setNeedsUpdateConstraints];
     // We use UIView animation inside a CATransaction in order to use the custom animation curve.
     [UIView animateWithDuration:duration
@@ -649,7 +687,7 @@ static const CGFloat kMaximumHeightLegacy = 80;
 - (void)updatesnackbarPositionWithKeyboardUserInfo:(NSDictionary *)userInfo {
   // Always set the bottom constraint, even if there isn't a Snackbar currently displayed.
   void (^updateBlock)(void) = ^{
-    self.bottomConstraint.constant = -[self dynamicBottomMargin];
+    self.containingViewBottomConstraint.constant = -[self dynamicBottomMargin];
     self.maximumHeightConstraint.constant = self.maximumHeight;
     [self triggerSnackbarLayoutChange];
   };
@@ -695,7 +733,7 @@ static const CGFloat kMaximumHeightLegacy = 80;
     _bottomOffset = bottomOffset;
 
     self.maximumHeightConstraint.constant = self.maximumHeight;
-    self.bottomConstraint.constant = -self.dynamicBottomMargin;
+    self.containingViewBottomConstraint.constant = -self.dynamicBottomMargin;
     [self triggerSnackbarLayoutChange];
 
     // If there is no Snackbar the following method returns CGRectNull, but we still need to notify
@@ -712,11 +750,12 @@ static const CGFloat kMaximumHeightLegacy = 80;
   }
 }
 
-- (void)setAlignment:(MDCSnackbarAlignment)alignment {
-  if (_alignment != alignment) {
-    _alignment = alignment;
+- (void)setHorizontalAlignment:(MDCSnackbarHorizontalAlignment)horizontalAlignment {
+  if (_horizontalAlignment != horizontalAlignment) {
+    _horizontalAlignment = horizontalAlignment;
 
-    [self activateSnackbarViewConstraintsForAlignment:alignment];
+    [self activateSnackbarViewConstraintsForHorizontalAlignment:horizontalAlignment
+                                              verticalAlignment:self.verticalAlignment];
 
     [self triggerSnackbarLayoutChange];
 
@@ -734,19 +773,59 @@ static const CGFloat kMaximumHeightLegacy = 80;
   }
 }
 
-- (void)activateSnackbarViewConstraintsForAlignment:(MDCSnackbarAlignment)alignment {
-  switch (alignment) {
-    case MDCSnackbarAlignmentCenter:
+- (void)setVerticalAlignment:(MDCSnackbarVerticalAlignment)verticalAlignment {
+  if (_verticalAlignment != verticalAlignment) {
+    _verticalAlignment = verticalAlignment;
+
+    [self activateSnackbarViewConstraintsForHorizontalAlignment:self.horizontalAlignment
+                                              verticalAlignment:verticalAlignment];
+
+    [self triggerSnackbarLayoutChange];
+
+    CGRect frame = [self snackbarRectInScreenCoordinates];
+    if (!CGRectIsNull(frame)) {
+      [self notifyOverlayChangeWithFrame:frame
+                                duration:[CATransaction animationDuration]
+                                   curve:UIViewAnimationCurveEaseInOut
+                          timingFunction:nil];
+    }
+  }
+}
+
+- (void)activateSnackbarViewConstraintsForHorizontalAlignment:
+            (MDCSnackbarHorizontalAlignment)horizontalAlignment
+                                            verticalAlignment:
+                                                (MDCSnackbarVerticalAlignment)verticalAlignment {
+  switch (horizontalAlignment) {
+    case MDCSnackbarHorizontalAlignmentCenter:
       self.snackbarViewLeadingConstraint.active = NO;
       self.snackbarViewCenterConstraint.active = YES;
       break;
-    case MDCSnackbarAlignmentLeading:
+    case MDCSnackbarHorizontalAlignmentLeading:
       self.snackbarViewLeadingConstraint.active = YES;
       self.snackbarViewCenterConstraint.active = NO;
       break;
     default:
       self.snackbarViewLeadingConstraint.active = NO;
       self.snackbarViewCenterConstraint.active = YES;
+      break;
+  }
+
+  switch (verticalAlignment) {
+    case MDCSnackbarVerticalAlignmentBottom:
+      self.snackbarViewTopConstraint.active = NO;
+      self.snackbarBottomOnscreenConstraint.active = !MDCSnackbarMessage.usesLegacySnackbar;
+      self.snackbarBottomOffscreenConstraint.active = MDCSnackbarMessage.usesLegacySnackbar;
+      break;
+    case MDCSnackbarVerticalAlignmentTop:
+      self.snackbarViewTopConstraint.active = YES;
+      self.snackbarBottomOnscreenConstraint.active = NO;
+      self.snackbarBottomOffscreenConstraint.active = NO;
+      break;
+    default:
+      self.snackbarViewTopConstraint.active = NO;
+      self.snackbarBottomOnscreenConstraint.active = !MDCSnackbarMessage.usesLegacySnackbar;
+      self.snackbarBottomOffscreenConstraint.active = MDCSnackbarMessage.usesLegacySnackbar;
       break;
   }
 }
@@ -834,26 +913,6 @@ static const CGFloat kMaximumHeightLegacy = 80;
   } else {
     return NO;
   }
-}
-
-#pragma mark - Timing functions
-
-static void WrapWithTimingFunctionForCurve(MDCAnimationTimingFunction mediaTiming,
-                                           void (^block)(void)) {
-  [CATransaction begin];
-  [CATransaction
-      setAnimationTimingFunction:[CAMediaTimingFunction mdc_functionWithType:mediaTiming]];
-  block();
-  [CATransaction commit];
-}
-
-+ (void)animateWithDuration:(NSTimeInterval)duration
-                      curve:(MDCAnimationTimingFunction)curve
-                 animations:(void (^)(void))animations
-                 completion:(void (^)(BOOL finished))completion {
-  WrapWithTimingFunctionForCurve(curve, ^{
-    [UIView animateWithDuration:duration animations:animations completion:completion];
-  });
 }
 
 @end
