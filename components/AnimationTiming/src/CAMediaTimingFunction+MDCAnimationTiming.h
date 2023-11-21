@@ -12,14 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#import "MDCMinimumOS.h"  // IWYU pragma: keep
+//#import "MDCMinimumOS.h"  // IWYU pragma: keep
 
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
-API_DEPRECATED_BEGIN("🤖👀 Use UIViewAnimationCurve instead. "
-                     "This has go/material-ios-migrations#scriptable-potential 🤖👀.",
-                     ios(12, 12))
+// API_DEPRECATED_BEGIN("🤖👀 Use UIViewAnimationCurve instead. "
+//                      "This has go/material-ios-migrations#scriptable-potential 🤖👀.",
+//                      ios(12, 12))
 
 /**
  Material Design easing curve animation values.
@@ -87,4 +87,4 @@ typedef NS_ENUM(NSUInteger, MDCAnimationTimingFunction) {
 
 @end
 
-API_DEPRECATED_END
+//API_DEPRECATED_END

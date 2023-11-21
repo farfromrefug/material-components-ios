@@ -16,10 +16,10 @@
 
 #import "MaterialShadowElevations.h"
 
-API_DEPRECATED_BEGIN("🤖👀 Use go/material-ios-branding UISlider instead. "
-                     "See go/material-ios-slider/gm2-migration for more details. "
-                     "This has go/material-ios-migrations#scriptable-potential 🤖👀.",
-                     ios(12, 12))
+// API_DEPRECATED_BEGIN("🤖👀 Use go/material-ios-branding UISlider instead. "
+//                      "See go/material-ios-slider/gm2-migration for more details. "
+//                      "This has go/material-ios-migrations#scriptable-potential 🤖👀.",
+//                      ios(12, 12))
 
 /** The visibility of the discrete dots. */
 typedef NS_ENUM(NSUInteger, MDCThumbDiscreteDotVisibility) {
@@ -399,4 +399,4 @@ typedef NS_ENUM(NSUInteger, MDCThumbDiscreteDotVisibility) {
 
 @end
 
-API_DEPRECATED_END
+//API_DEPRECATED_END

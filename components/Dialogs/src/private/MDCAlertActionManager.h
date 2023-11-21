@@ -76,7 +76,7 @@
 
  Note: It is the caller's responsibility to make sure the button is added to the view hierarchy.
  */
-- (UIButton *)createButtonForAction:(nonnull MDCAlertAction *)action
+- (UIButton *_Nonnull)createButtonForAction:(nonnull MDCAlertAction *)action
                              target:(nullable id)target
                            selector:(SEL _Nonnull)selector;
 

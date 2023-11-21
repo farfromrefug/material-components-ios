@@ -59,11 +59,11 @@
 
  @seealso https://developer.apple.com/documentation/uikit/uifont/scaling_fonts_automatically
  */
-API_DEPRECATED_BEGIN("🤖👀 Use Typescale tokens instead. "
-                     "See go/material-ios-typography/gm2-migration, go/material-ios-dynamic-type "
-                     "and go/material-ios-tokens#typescale-tokens for more info. "
-                     "This has go/material-ios-migrations#scriptable-potential 🤖👀",
-                     ios(12, 12))
+// API_DEPRECATED_BEGIN("🤖👀 Use Typescale tokens instead. "
+//                      "See go/material-ios-typography/gm2-migration, go/material-ios-dynamic-type "
+//                      "and go/material-ios-tokens#typescale-tokens for more info. "
+//                      "This has go/material-ios-migrations#scriptable-potential 🤖👀",
+//                      ios(12, 12))
 __attribute__((objc_subclassing_restricted))
 @interface MDCScalableFontDescriptor : NSObject
 
@@ -123,4 +123,4 @@ __attribute__((objc_subclassing_restricted))
 - (null_unspecified instancetype)init NS_UNAVAILABLE;
 
 @end
-API_DEPRECATED_END
+//API_DEPRECATED_END

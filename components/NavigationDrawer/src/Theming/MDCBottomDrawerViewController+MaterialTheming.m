@@ -53,12 +53,16 @@ static const CGFloat kTopHandleAlpha = 0.12f;
     };
     self.traitCollectionDidChangeBlock = ^(MDCBottomDrawerViewController *_Nonnull bottomDrawer,
                                            UITraitCollection *_Nullable previousTraitCollection) {
-      if ([bottomDrawer.traitCollection
-              hasDifferentColorAppearanceComparedToTraitCollection:previousTraitCollection]) {
-        [MDCBottomDrawerViewController
-            mdc_setResolvedBackgroundColorForBottomDrawer:bottomDrawer
-                                applyToTrackingScrollView:applyToTrackingScrollView
-                                               withScheme:colorScheme];
+      if (@available(iOS 13.0, *)) {
+        if ([bottomDrawer.traitCollection
+             hasDifferentColorAppearanceComparedToTraitCollection:previousTraitCollection]) {
+          [MDCBottomDrawerViewController
+           mdc_setResolvedBackgroundColorForBottomDrawer:bottomDrawer
+           applyToTrackingScrollView:applyToTrackingScrollView
+           withScheme:colorScheme];
+        }
+      } else {
+        // Fallback on earlier versions
       }
     };
   }

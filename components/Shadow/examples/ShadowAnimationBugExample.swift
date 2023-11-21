@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import UIKit
-import MaterialComponents.MaterialShadow_Animations 
+//import MaterialComponents.MaterialShadow_Animations
 import MaterialComponents.MaterialShadow
 import MaterialComponents.MaterialContainerScheme
 
@@ -83,14 +83,14 @@ final class ShadowAnimationBugExample: UIViewController {
     let endRect = CGRect(
       origin: view.frame.origin, size: CGSize(width: endWidth, height: startFrame.height))
 
-    view.mdc_animateBoundsWithCenter(
-      to: startFrame, center: view.center, duration: duration, timingFunction: timingFunction
-    ) { [weak self] didComplete in
-      if didComplete {
-        self?.repeatingViewAnimationWithCenter(
-          view: view, startFrame: endRect, duration: duration, timingFunction: timingFunction)
-      }
-    }
+//    view.mdc_animateBoundsWithCenter(
+//      to: startFrame, center: view.center, duration: duration, timingFunction: timingFunction
+//    ) { [weak self] didComplete in
+//      if didComplete {
+//        self?.repeatingViewAnimationWithCenter(
+//          view: view, startFrame: endRect, duration: duration, timingFunction: timingFunction)
+//      }
+//    }
   }
 
   /// Expansion and contraction of width and corner radius
@@ -103,16 +103,16 @@ final class ShadowAnimationBugExample: UIViewController {
     let endRect = CGRect(
       origin: view.frame.origin, size: CGSize(width: endWidth, height: startFrame.height))
 
-    view.mdc_animateBoundsWithCenterAndCornerRadius(
-      to: endRect, center: view.center, cornerRadius: endRadius, duration: duration,
-      timingFunction: timingFunction
-    ) { [weak self] didComplete in
-      if didComplete {
-        self?.repeatingViewAnimationWithCenterAndCornerRadius(
-          view: view, startFrame: endRect, startRadius: endRadius, duration: duration,
-          timingFunction: timingFunction)
-      }
-    }
+//    view.mdc_animateBoundsWithCenterAndCornerRadius(
+//      to: endRect, center: view.center, cornerRadius: endRadius, duration: duration,
+//      timingFunction: timingFunction
+//    ) { [weak self] didComplete in
+//      if didComplete {
+//        self?.repeatingViewAnimationWithCenterAndCornerRadius(
+//          view: view, startFrame: endRect, startRadius: endRadius, duration: duration,
+//          timingFunction: timingFunction)
+//      }
+//    }
   }
 
   /// Expansion and contraction of corner radius only
@@ -121,12 +121,12 @@ final class ShadowAnimationBugExample: UIViewController {
   ) {
     let endRadius = targetCornerRadius(for: view.layer.cornerRadius)
 
-    view.mdc_animateCornerRadius(
-      toValue: endRadius, duration: duration, timingFunction: timingFunction
-    ) { [weak self] didComplete in
-      self?.repeatingCornerRadiusAnimation(
-        view: view, startRadius: endRadius, duration: duration, timingFunction: timingFunction)
-    }
+//    view.mdc_animateCornerRadius(
+//      toValue: endRadius, duration: duration, timingFunction: timingFunction
+//    ) { [weak self] didComplete in
+//      self?.repeatingCornerRadiusAnimation(
+//        view: view, startRadius: endRadius, duration: duration, timingFunction: timingFunction)
+//    }
   }
 
   /// Expansion and contraction of height, width, and corner radius
@@ -140,16 +140,16 @@ final class ShadowAnimationBugExample: UIViewController {
     let endRect = CGRect(
       origin: view.frame.origin, size: CGSize(width: endWidth, height: endHeight))
 
-    view.mdc_animateBoundsWithCenterAndCornerRadius(
-      to: endRect, center: view.center, cornerRadius: endRadius, duration: duration,
-      timingFunction: timingFunction
-    ) { [weak self] didComplete in
-      if didComplete {
-        self?.repeatingCenterRadiusHeightWidthAnimation(
-          view: view, startFrame: endRect, startRadius: endRadius, duration: duration,
-          timingFunction: timingFunction)
-      }
-    }
+//    view.mdc_animateBoundsWithCenterAndCornerRadius(
+//      to: endRect, center: view.center, cornerRadius: endRadius, duration: duration,
+//      timingFunction: timingFunction
+//    ) { [weak self] didComplete in
+//      if didComplete {
+//        self?.repeatingCenterRadiusHeightWidthAnimation(
+//          view: view, startFrame: endRect, startRadius: endRadius, duration: duration,
+//          timingFunction: timingFunction)
+//      }
+//    }
   }
 }
 

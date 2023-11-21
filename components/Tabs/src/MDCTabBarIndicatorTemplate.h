@@ -14,10 +14,10 @@
 
 #import <UIKit/UIKit.h>
 
-API_DEPRECATED_BEGIN("🤖👀 Use a branded MDCTabBarView instead. "
-                     "See go/material-ios-tabs and go/material-ios-tabbar-migration for more info. "
-                     "This has go/material-ios-migrations#scriptable-potential 🤖👀.",
-                     ios(12, 12))
+// API_DEPRECATED_BEGIN("🤖👀 Use a branded MDCTabBarView instead. "
+//                      "See go/material-ios-tabs and go/material-ios-tabbar-migration for more info. "
+//                      "This has go/material-ios-migrations#scriptable-potential 🤖👀.",
+//                      ios(12, 12))
 
 @class MDCTabBarIndicatorAttributes;
 @protocol MDCTabBarIndicatorContext;
@@ -38,4 +38,4 @@ API_DEPRECATED_BEGIN("🤖👀 Use a branded MDCTabBarView instead. "
 
 @end
 
-API_DEPRECATED_END
+//API_DEPRECATED_END

@@ -13,3 +13,4 @@
 // limitations under the License.
 
 #import "UIColor+MaterialDynamic.h"  // IWYU pragma: keep
+#import "UIColor+MaterialBlending.h"  // IWYU pragma: keep

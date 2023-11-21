@@ -12,18 +12,18 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#import "MDCMinimumOS.h"  // IWYU pragma: keep
+//#import "MDCMinimumOS.h"  // IWYU pragma: keep
 
 #import <UIKit/UIKit.h>
 #import "MDCActionSheetController.h"
 #import "MaterialInk.h"  // ComponentImport
 #import "MaterialInk.h"
 
-API_DEPRECATED_BEGIN("🕘 Schedule time to migrate. "
-                     "Follow go/material-ios-menus to use UIMenu instead."
-                     "Use UIAlertController in action sheet style for destructive confirmations. "
-                     "This is go/material-ios-migrations#not-scriptable 🕘",
-                     ios(12, 12))
+// API_DEPRECATED_BEGIN("🕘 Schedule time to migrate. "
+//                      "Follow go/material-ios-menus to use UIMenu instead."
+//                      "Use UIAlertController in action sheet style for destructive confirmations. "
+//                      "This is go/material-ios-migrations#not-scriptable 🕘",
+//                      ios(12, 12))
 
 @interface MDCActionSheetItemTableViewCell : UITableViewCell
 /**
@@ -78,4 +78,4 @@ API_DEPRECATED_BEGIN("🕘 Schedule time to migrate. "
 
 @end
 
-API_DEPRECATED_END
+//API_DEPRECATED_END

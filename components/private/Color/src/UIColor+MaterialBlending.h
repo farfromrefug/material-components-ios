@@ -1,4 +1,4 @@
-// Copyright 2018-present the Material Components for iOS authors. All Rights Reserved.
+// Copyright 2019-present the Material Components for iOS authors. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,24 +14,16 @@
 
 #import <UIKit/UIKit.h>
 
-#import "MDCTextField.h"
-
-// API_DEPRECATED_BEGIN(
-//     "🕘 Schedule time to migrate. "
-//     "Use branded UITextField or UITextView instead: go/material-ios-text-fields/gm2-migration. "
-//     "This is go/material-ios-migrations#not-scriptable 🕘",
-//     ios(12, 12))
+@interface UIColor (MaterialBlending)
 
 /**
-  Exposes parts of MDCTextField for testing.
- */
-@interface MDCTextField (Testing)
+ Blending a color over a background color using Alpha compositing technique.
+ More info about Alpha compositing: https://en.wikipedia.org/wiki/Alpha_compositing
 
-/**
-  Synthesizes a touch on the clear button of the text field.
+ @param color UIColor value that sits on top.
+ @param backgroundColor UIColor on the background.
  */
-- (void)clearButtonDidTouch;
++ (nonnull UIColor *)mdc_blendColor:(nonnull UIColor *)color
+                withBackgroundColor:(nonnull UIColor *)backgroundColor;
 
 @end
-
-//API_DEPRECATED_END

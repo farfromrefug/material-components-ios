@@ -21,10 +21,10 @@
 
 @protocol MDCShapeGenerating;
 
-API_DEPRECATED_BEGIN("🤖👀 Use branded UIView instead. "
-                     "See go/material-ios-cards/gm2-migration for more details. "
-                     "This has go/material-ios-migrations#scriptable-potential 🤖👀.",
-                     ios(12, API_TO_BE_DEPRECATED))
+// API_DEPRECATED_BEGIN("🤖👀 Use branded UIView instead. "
+//                      "See go/material-ios-cards/gm2-migration for more details. "
+//                      "This has go/material-ios-migrations#scriptable-potential 🤖👀.",
+//                      ios(12, API_TO_BE_DEPRECATED))
 
 // TODO(b/238930139): Remove usage of this deprecated API.
 #pragma clang diagnostic push
@@ -179,4 +179,4 @@ API_DEPRECATED_BEGIN("🤖👀 Use branded UIView instead. "
 
 @end
 
-API_DEPRECATED_END
+//API_DEPRECATED_END

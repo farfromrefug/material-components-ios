@@ -14,10 +14,10 @@
 
 #import <Foundation/Foundation.h>
 
-API_DEPRECATED_BEGIN("🤖👀 Use a branded MDCTabBarView instead. "
-                     "See go/material-ios-tabs and go/material-ios-tabbar-migration for more info. "
-                     "This has go/material-ios-migrations#scriptable-potential 🤖👀.",
-                     ios(12, 12))
+// API_DEPRECATED_BEGIN("🤖👀 Use a branded MDCTabBarView instead. "
+//                      "See go/material-ios-tabs and go/material-ios-tabbar-migration for more info. "
+//                      "This has go/material-ios-migrations#scriptable-potential 🤖👀.",
+//                      ios(12, 12))
 
 /** Alignment styles for items in a tab bar. */
 typedef NS_ENUM(NSInteger, MDCTabBarAlignment) {
@@ -40,4 +40,4 @@ typedef NS_ENUM(NSInteger, MDCTabBarAlignment) {
   MDCTabBarAlignmentCenterSelected,
 };
 
-API_DEPRECATED_END
+//API_DEPRECATED_END

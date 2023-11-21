@@ -14,10 +14,10 @@
 
 #import <UIKit/UIKit.h>
 
-API_DEPRECATED_BEGIN("🤖👀 Use a branded MDCTabBarView instead. "
-                     "See go/material-ios-tabs and go/material-ios-tabbar-migration for more info. "
-                     "This has go/material-ios-migrations#scriptable-potential 🤖👀.",
-                     ios(12, 12))
+// API_DEPRECATED_BEGIN("🤖👀 Use a branded MDCTabBarView instead. "
+//                      "See go/material-ios-tabs and go/material-ios-tabbar-migration for more info. "
+//                      "This has go/material-ios-migrations#scriptable-potential 🤖👀.",
+//                      ios(12, 12))
 
 /** Appearance for content within tab bar items. */
 typedef NS_ENUM(NSInteger, MDCTabBarItemAppearance) {
@@ -31,4 +31,4 @@ typedef NS_ENUM(NSInteger, MDCTabBarItemAppearance) {
   MDCTabBarItemAppearanceTitledImages,
 };
 
-API_DEPRECATED_END
+//API_DEPRECATED_END

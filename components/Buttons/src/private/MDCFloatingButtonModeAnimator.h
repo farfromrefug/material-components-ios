@@ -19,10 +19,10 @@
 
 @protocol MDCFloatingButtonModeAnimatorDelegate;
 
-API_DEPRECATED_BEGIN("🤖👀 Use branded M3CButton instead. "
-                     "See go/material-ios-buttons/gm2-migration for more details. "
-                     "This has go/material-ios-migrations#scriptable-potential 🤖👀.",
-                     ios(12, 12))
+// API_DEPRECATED_BEGIN("🤖👀 Use branded M3CButton instead. "
+//                      "See go/material-ios-buttons/gm2-migration for more details. "
+//                      "This has go/material-ios-migrations#scriptable-potential 🤖👀.",
+//                      ios(12, 12))
 
 /**
  Animates an MDCFloatingButton's mode.
@@ -54,4 +54,4 @@ __attribute__((objc_subclassing_restricted))
 
 @end
 
-API_DEPRECATED_END
+//API_DEPRECATED_END

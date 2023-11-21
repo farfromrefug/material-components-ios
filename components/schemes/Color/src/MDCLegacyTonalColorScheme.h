@@ -20,10 +20,10 @@
 
 #pragma mark - Soon to be deprecated
 
-API_DEPRECATED_BEGIN("🤖👀 Use go/material-ios-branding APIs instead. "
-                     "See go/material-ios-tokens guidance for more details. "
-                     "This has go/material-ios-migrations#scriptable-potential 🤖👀",
-                     ios(12, 12))
+// API_DEPRECATED_BEGIN("🤖👀 Use go/material-ios-branding APIs instead. "
+//                      "See go/material-ios-tokens guidance for more details. "
+//                      "This has go/material-ios-migrations#scriptable-potential 🤖👀",
+//                      ios(12, 12))
 
 /**
  A tonal color scheme is a color scheme based on a primary tonal color palette and secondary tonal
@@ -84,4 +84,4 @@ API_DEPRECATED_BEGIN("🤖👀 Use go/material-ios-branding APIs instead. "
 
 @end
 
-API_DEPRECATED_END
+//API_DEPRECATED_END

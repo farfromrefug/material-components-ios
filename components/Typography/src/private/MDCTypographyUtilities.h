@@ -15,11 +15,11 @@
 
 #import <UIKit/UIKit.h>
 
-API_DEPRECATED_BEGIN(
-    "🤖👀 Use local trait collections instead. "
-    "This has go/material-ios-migrations#scriptable-potential 🤖👀.",
-    ios(12, 12))
+// API_DEPRECATED_BEGIN(
+//     "🤖👀 Use local trait collections instead. "
+//     "This has go/material-ios-migrations#scriptable-potential 🤖👀.",
+//     ios(12, 12))
 
 UIContentSizeCategory GetCurrentSizeCategory(void);
 
-API_DEPRECATED_END
+//API_DEPRECATED_END

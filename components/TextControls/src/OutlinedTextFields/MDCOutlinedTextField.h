@@ -16,11 +16,11 @@
 
 #import "MaterialTextControls+BaseTextFields.h"
 
-API_DEPRECATED_BEGIN(
-    "🕘 Schedule time to migrate. "
-    "Use branded UITextField or UITextView instead: go/material-ios-text-fields/gm2-migration. "
-    "This is go/material-ios-migrations#not-scriptable 🕘",
-    ios(12, 12))
+// API_DEPRECATED_BEGIN(
+//     "🕘 Schedule time to migrate. "
+//     "Use branded UITextField or UITextView instead: go/material-ios-text-fields/gm2-migration. "
+//     "This is go/material-ios-migrations#not-scriptable 🕘",
+    // ios(12, 12))
 
 /**
  An implementation of a Material outlined text field.
@@ -50,4 +50,4 @@ __attribute__((objc_subclassing_restricted))
 
 @end
 
-API_DEPRECATED_END
+//API_DEPRECATED_END

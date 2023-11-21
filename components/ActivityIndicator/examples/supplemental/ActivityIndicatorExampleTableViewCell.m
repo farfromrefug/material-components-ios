@@ -24,7 +24,7 @@
       return;
     }
 
-    float incrementInterval = MIN(1.0, slider.maximumValue / 10.0);
+    float incrementInterval = (float)MIN(1.0, slider.maximumValue / 10.0);
     float valueAfterIncrement = slider.value + incrementInterval;
 
     [slider setValue:valueAfterIncrement animated:YES];
@@ -40,7 +40,7 @@
       return;
     }
 
-    float decrementInterval = MIN(1.0, slider.maximumValue / 10.0);
+    float decrementInterval = (float)MIN(1.0, slider.maximumValue / 10.0);
     float valueAfterDecrement = slider.value - decrementInterval;
 
     [slider setValue:valueAfterDecrement animated:YES];

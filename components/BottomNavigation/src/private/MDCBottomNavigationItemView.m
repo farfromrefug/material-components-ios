@@ -136,10 +136,14 @@ UIKIT_EXTERN float UIAnimationDragCoefficient(void);  // UIKit private drag coef
 - (void)traitCollectionDidChange:(nullable UITraitCollection *)previousTraitCollection {
   [super traitCollectionDidChange:previousTraitCollection];
 
-  if (self.traitCollection.legibilityWeight != previousTraitCollection.legibilityWeight) {
-    // Layout subviews when bold text setting changes so the label size is recalculated to
-    // fit the text.
-    [self setNeedsLayout];
+  if (@available(iOS 13.0, *)) {
+    if (self.traitCollection.legibilityWeight != previousTraitCollection.legibilityWeight) {
+      // Layout subviews when bold text setting changes so the label size is recalculated to
+      // fit the text.
+      [self setNeedsLayout];
+    }
+  } else {
+    // Fallback on earlier versions
   }
 }
 
@@ -367,7 +371,7 @@ UIKIT_EXTERN float UIAnimationDragCoefficient(void);  // UIKit private drag coef
       [UIView animateWithDuration:kMDCBottomNavigationItemViewSelectionAnimationDuration
                        animations:^(void) {
                          self.iconImageView.center = iconImageViewCenter;
-                         _badge.center =
+        self->_badge.center =
                              [self badgeCenterFromIconFrame:CGRectStandardize(iconImageViewFrame)
                                                       isRTL:isRTL];
                        }];

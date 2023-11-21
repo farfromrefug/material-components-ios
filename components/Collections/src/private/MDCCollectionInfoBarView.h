@@ -18,10 +18,10 @@
 // longer import delegates as transitive dependencies.
 #import "MDCCollectionInfoBarViewDelegate.h"
 
-API_DEPRECATED_BEGIN("🕘 Schedule time to migrate. "
-                     "Use branded UITableView or UICollectionView instead: go/material-ios-lists. "
-                     "This is go/material-ios-migrations#not-scriptable 🕘",
-                     ios(11, 12))
+// API_DEPRECATED_BEGIN("🕘 Schedule time to migrate. "
+//                      "Use branded UITableView or UICollectionView instead: go/material-ios-lists. "
+//                      "This is go/material-ios-migrations#not-scriptable 🕘",
+//                      ios(11, 12))
 
 @class MDCCollectionInfoBarView;
 
@@ -127,4 +127,4 @@ typedef NS_ENUM(NSUInteger, MDCCollectionInfoBarViewStyle) {
 
 @end
 
-API_DEPRECATED_END
+//API_DEPRECATED_END

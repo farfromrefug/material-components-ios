@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#import "MDCMinimumOS.h"  // IWYU pragma: keep
+//#import "MDCMinimumOS.h"  // IWYU pragma: keep
 
 #import <UIKit/UIKit.h>
 
@@ -27,11 +27,11 @@
 @class MDCFlexibleHeaderViewController;
 @protocol MDCAppBarNavigationControllerToBeDeprecatedDelegate;
 
-API_DEPRECATED_BEGIN(
-    "🕘 Schedule time to migrate. "
-    "Use branded UINavigationController instead: go/material-ios-top-app-bars/gm2-migration. "
-    "This is go/material-ios-migrations#not-scriptable 🕘",
-    ios(11, 12))
+// API_DEPRECATED_BEGIN(
+//     "🕘 Schedule time to migrate. "
+//     "Use branded UINavigationController instead: go/material-ios-top-app-bars/gm2-migration. "
+//     "This is go/material-ios-migrations#not-scriptable 🕘",
+//     ios(11, 12))
 
 /**
  Defines the events that an MDCAppBarNavigationController may send to a delegate.
@@ -209,4 +209,4 @@ __attribute__((objc_subclassing_restricted))
 
 @end
 
-API_DEPRECATED_END
+//API_DEPRECATED_END

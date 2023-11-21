@@ -329,10 +329,21 @@ static const CGFloat kMinimumAccessibiltyFontSize = 21;
       _contentView.userInteractionEnabled = NO;
     } else {
       UIScrollView *contentView = [[UIScrollView alloc] init];
-      contentView.indicatorStyle =
-          self.traitCollection.userInterfaceStyle == UIUserInterfaceStyleLight
-              ? UIScrollViewIndicatorStyleWhite
-              : UIScrollViewIndicatorStyleBlack;
+      if (@available(iOS 12.0, *)) {
+        contentView.indicatorStyle =
+        self.traitCollection.userInterfaceStyle == UIUserInterfaceStyleLight
+        ? UIScrollViewIndicatorStyleWhite
+        : UIScrollViewIndicatorStyleBlack;
+      } else {
+        // Fallback on earlier versions
+      }if (@available(iOS 12.0, *)) {
+        contentView.indicatorStyle =
+        self.traitCollection.userInterfaceStyle == UIUserInterfaceStyleLight
+        ? UIScrollViewIndicatorStyleWhite
+        : UIScrollViewIndicatorStyleBlack;
+      } else {
+        // Fallback on earlier versions
+      }
       _contentView = contentView;
 
       // Use a separate gesture recognizer on the scroll view to allow for scrolling content without

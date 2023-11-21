@@ -17,10 +17,10 @@
 
 #import <Foundation/Foundation.h>
 
-API_DEPRECATED_BEGIN("🤖👀 Use branded M3CButton instead. "
-                     "See go/material-ios-buttons/gm2-migration for more details. "
-                     "This has go/material-ios-migrations#scriptable-potential 🤖👀.",
-                     ios(12, 12))
+// API_DEPRECATED_BEGIN("🤖👀 Use branded M3CButton instead. "
+//                      "See go/material-ios-buttons/gm2-migration for more details. "
+//                      "This has go/material-ios-migrations#scriptable-potential 🤖👀.",
+//                      ios(12, 12))
 
 /**
  The Material Design typography system's themer for instances of MDCButton.
@@ -48,4 +48,4 @@ __deprecated_msg("Please use MDCButton+MaterialTheming instead. (Note: Typograph
 
 @end
 
-API_DEPRECATED_END
+//API_DEPRECATED_END

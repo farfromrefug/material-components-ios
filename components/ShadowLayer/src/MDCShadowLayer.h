@@ -15,10 +15,10 @@
 #import <UIKit/UIKit.h>
 #import "MaterialShadowElevations.h"
 
-API_DEPRECATED_BEGIN("🤖👀 Use branded UIKit shadows instead. "
-                     "See go/material-ios-elevation/gm2-migration for more details. "
-                     "This has go/material-ios-migrations#scriptable-potential 🤖👀.",
-                     ios(12, 12))
+// API_DEPRECATED_BEGIN("🤖👀 Use branded UIKit shadows instead. "
+//                      "See go/material-ios-elevation/gm2-migration for more details. "
+//                      "This has go/material-ios-migrations#scriptable-potential 🤖👀.",
+//                      ios(12, 12))
 
 /**
  Metrics of the Material shadow effect.
@@ -110,4 +110,4 @@ API_DEPRECATED_BEGIN("🤖👀 Use branded UIKit shadows instead. "
 
 @end
 
-API_DEPRECATED_END
+//API_DEPRECATED_END

@@ -14,10 +14,10 @@
 
 #import "MDCButton.h"
 
-API_DEPRECATED_BEGIN("🤖👀 Use branded M3CButton instead. "
-                     "See go/material-ios-buttons/gm2-migration for more details. "
-                     "This has go/material-ios-migrations#scriptable-potential 🤖👀.",
-                     ios(12, 12))
+// API_DEPRECATED_BEGIN("🤖👀 Use branded M3CButton instead. "
+//                      "See go/material-ios-buttons/gm2-migration for more details. "
+//                      "This has go/material-ios-migrations#scriptable-potential 🤖👀.",
+//                      ios(12, 12))
 
 /**
  A "raised" MDCButton.
@@ -34,4 +34,4 @@ API_DEPRECATED_BEGIN("🤖👀 Use branded M3CButton instead. "
 @interface MDCRaisedButton : MDCButton
 @end
 
-API_DEPRECATED_END
+//API_DEPRECATED_END

@@ -16,9 +16,9 @@
 
 #import "MaterialShapes.h"
 
-API_DEPRECATED_BEGIN("🤖👀 Use explicit mask layers and shape paths instead. "
-                     "This has go/material-ios-migrations#scriptable-potential 🤖👀.",
-                     ios(12, 12))
+// API_DEPRECATED_BEGIN("🤖👀 Use explicit mask layers and shape paths instead. "
+//                      "This has go/material-ios-migrations#scriptable-potential 🤖👀.",
+//                      ios(12, 12))
 
 typedef enum : NSUInteger {
   MDCTriangleEdgeStyleHandle,
@@ -50,4 +50,4 @@ typedef enum : NSUInteger {
 
 @end
 
-API_DEPRECATED_END
+//API_DEPRECATED_END

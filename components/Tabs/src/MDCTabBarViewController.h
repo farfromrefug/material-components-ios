@@ -19,10 +19,10 @@
 // longer import delegates as transitive dependencies.
 #import "MDCTabBarControllerDelegate.h"
 
-API_DEPRECATED_BEGIN("🤖👀 Use a branded MDCTabBarView instead. "
-                     "See go/material-ios-tabs and go/material-ios-tabbar-migration for more info. "
-                     "This has go/material-ios-migrations#scriptable-potential 🤖👀.",
-                     ios(12, 12))
+// API_DEPRECATED_BEGIN("🤖👀 Use a branded MDCTabBarView instead. "
+//                      "See go/material-ios-tabs and go/material-ios-tabbar-migration for more info. "
+//                      "This has go/material-ios-migrations#scriptable-potential 🤖👀.",
+//                      ios(12, 12))
 
 @protocol MDCTabBarControllerDelegate;
 
@@ -79,4 +79,4 @@ __deprecated_msg(
 
 /** The delegate protocol for MDCTabBarViewController */
 
-API_DEPRECATED_END
+//API_DEPRECATED_END

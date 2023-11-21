@@ -14,11 +14,11 @@
 
 #import "MDCRippleView.h"
 
-API_DEPRECATED_BEGIN(
-    "🕘 Schedule time to migrate. "
-    "Use default system highlight behavior instead: go/material-ios-touch-response. "
-    "This is go/material-ios-migrations#not-scriptable 🕘",
-    ios(12, 12))
+// API_DEPRECATED_BEGIN(
+//     "🕘 Schedule time to migrate. "
+//     "Use default system highlight behavior instead: go/material-ios-touch-response. "
+//     "This is go/material-ios-migrations#not-scriptable 🕘",
+//     ios(12, 12))
 
 /**
  Provides the current state of the ripple. The ripple is either in its normal state, or in the
@@ -171,4 +171,4 @@ __attribute__((objc_subclassing_restricted))
 
 @end
 
-API_DEPRECATED_END
+//API_DEPRECATED_END

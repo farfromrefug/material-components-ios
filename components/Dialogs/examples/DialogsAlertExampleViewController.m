@@ -77,11 +77,15 @@ static NSString *const kReusableIdentifierItem = @"cell";
     button.titleLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
   }
 
-  alertController.titleColor = UIColor.labelColor;
-  alertController.messageColor = UIColor.secondaryLabelColor;
-  for (MDCAlertAction *action in alertController.actions) {
-    UIButton *button = [alertController buttonForAction:action];
-    button.titleLabel.textColor = UIColor.labelColor;
+  if (@available(iOS 13.0, *)) {
+    alertController.titleColor = UIColor.labelColor;
+    alertController.messageColor = UIColor.secondaryLabelColor;
+    for (MDCAlertAction *action in alertController.actions) {
+      UIButton *button = [alertController buttonForAction:action];
+      button.titleLabel.textColor = UIColor.labelColor;
+    }
+  } else {
+    // Fallback on earlier versions
   }
 }
 

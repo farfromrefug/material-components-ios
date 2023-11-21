@@ -143,7 +143,7 @@ static const CGFloat kProgressIntervalDelay = 0.333;
 
   CABasicAnimation *growAnimation = [CABasicAnimation animationWithKeyPath:@"bounds.size.width"];
   growAnimation.timingFunction = [[CAMediaTimingFunction alloc] initWithControlPoints:
-                                                                                 0.40:0.0:0.20:1.0];
+                                                                                 (float)0.40:(float)0.0:(float)0.20:(float)1.0];
 
   growAnimation.duration = kProgressIntervalDuration;
 

@@ -14,7 +14,7 @@
 
 #import <UIKit/UIKit.h>
 
-#import "MDCMinimumOS.h"  // IWYU pragma: keep
+//#import "MDCMinimumOS.h"  // IWYU pragma: keep
 
 @class MDCDotBadgeAppearance;
 

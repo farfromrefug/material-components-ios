@@ -18,11 +18,11 @@
 
 @protocol MDCButtonBarDelegate;
 
-API_DEPRECATED_BEGIN(
-    "🕘 Schedule time to migrate. "
-    "Use branded UINavigationController instead: go/material-ios-top-app-bars/gm2-migration. "
-    "This is go/material-ios-migrations#not-scriptable 🕘",
-    ios(12, 12))
+// API_DEPRECATED_BEGIN(
+//     "🕘 Schedule time to migrate. "
+//     "Use branded UINavigationController instead: go/material-ios-top-app-bars/gm2-migration. "
+//     "This is go/material-ios-migrations#not-scriptable 🕘",
+//     ios(12, 12))
 
 /**
  The position of the button bar, typically aligned with the leading or trailing edge of the screen.
@@ -266,4 +266,4 @@ typedef NS_OPTIONS(NSUInteger, MDCBarButtonItemLayoutHints) {
 @end
 #endif  // MDC_AVAILABLE_SDK_IOS(13_0)
 
-API_DEPRECATED_END
+//API_DEPRECATED_END

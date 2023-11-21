@@ -15,11 +15,11 @@
 #import <CoreGraphics/CoreGraphics.h>
 #import <Foundation/Foundation.h>
 
-API_DEPRECATED_BEGIN("🤖👀 Use colors with dynamic providers that handle elevation instead. "
-                     "See go/material-ios-color/gm2-migration and "
-                     "go/material-ios-elevation/gm2-migration for more info. "
-                     "This has go/material-ios-migrations#scriptable-potential 🤖👀.",
-                     ios(12, 12))
+// API_DEPRECATED_BEGIN("🤖👀 Use colors with dynamic providers that handle elevation instead. "
+//                      "See go/material-ios-color/gm2-migration and "
+//                      "go/material-ios-elevation/gm2-migration for more info. "
+//                      "This has go/material-ios-migrations#scriptable-potential 🤖👀.",
+//                      ios(12, 12))
 
 /**
  Provides APIs for @c UIViews to communicate their elevation throughout the view hierarchy.
@@ -47,4 +47,4 @@ API_DEPRECATED_BEGIN("🤖👀 Use colors with dynamic providers that handle ele
 
 @end
 
-API_DEPRECATED_END
+//API_DEPRECATED_END

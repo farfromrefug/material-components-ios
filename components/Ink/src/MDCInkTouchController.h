@@ -18,11 +18,11 @@
 // longer import delegates as transitive dependencies.
 #import "MDCInkTouchControllerDelegate.h"
 
-API_DEPRECATED_BEGIN(
-    "🕘 Schedule time to migrate. "
-    "Use default system highlight behavior instead: go/material-ios-touch-response. "
-    "This is go/material-ios-migrations#not-scriptable 🕘",
-    ios(12, 12))
+// API_DEPRECATED_BEGIN(
+//     "🕘 Schedule time to migrate. "
+//     "Use default system highlight behavior instead: go/material-ios-touch-response. "
+//     "This is go/material-ios-migrations#not-scriptable 🕘",
+//     ios(12, 12))
 
 @class MDCInkGestureRecognizer;
 @class MDCInkTouchController;
@@ -134,4 +134,4 @@ __deprecated_msg("Please use MDCRippleTouchController instead.") @interface MDCI
 
 @end
 
-API_DEPRECATED_END
+//API_DEPRECATED_END

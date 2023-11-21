@@ -14,9 +14,9 @@
 
 #import <UIKit/UIKit.h>
 
-API_DEPRECATED_BEGIN("🤖👀 Use layer.cornerRadius to achieve rounded corners. "
-                     "This has go/material-ios-migrations#scriptable-potential 🤖👀.",
-                     ios(12, 12))
+// API_DEPRECATED_BEGIN("🤖👀 Use layer.cornerRadius to achieve rounded corners. "
+//                      "This has go/material-ios-migrations#scriptable-potential 🤖👀.",
+//                      ios(12, 12))
 
 /**
  A protocol for objects that create closed CGPaths of varying sizes.
@@ -33,4 +33,4 @@ API_DEPRECATED_BEGIN("🤖👀 Use layer.cornerRadius to achieve rounded corners
 
 @end
 
-API_DEPRECATED_END
+//API_DEPRECATED_END

@@ -16,9 +16,9 @@
 
 #import "MaterialTypographyScheme+Scheming.h"
 
-API_DEPRECATED_BEGIN("🤖👀 Use Typescale tokens instead (go/material-ios-tokens#typescale-tokens). "
-                     "This has go/material-ios-migrations#scriptable-potential 🤖👀",
-                     ios(12, 12))
+// API_DEPRECATED_BEGIN("🤖👀 Use Typescale tokens instead (go/material-ios-tokens#typescale-tokens). "
+//                      "This has go/material-ios-migrations#scriptable-potential 🤖👀",
+//                      ios(12, 12))
 
 /**
  An enum of default typography schemes that are supported.
@@ -88,4 +88,4 @@ typedef NS_ENUM(NSInteger, MDCTypographySchemeDefaults) {
 
 @end
 
-API_DEPRECATED_END
+//API_DEPRECATED_END

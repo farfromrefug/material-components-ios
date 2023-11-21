@@ -164,7 +164,11 @@ NS_ASSUME_NONNULL_BEGIN
   self.tintColor = color;
   if (self.currentImage != nil && color != nil &&
       self.currentImage.renderingMode == UIImageRenderingModeAlwaysTemplate) {
-    [self setImage:[self.currentImage imageWithTintColor:color] forState:state];
+    if (@available(iOS 13.0, *)) {
+      [self setImage:[self.currentImage imageWithTintColor:color] forState:state];
+    } else {
+      // Fallback on earlier versions
+    }
   }
 }
 
@@ -295,7 +299,11 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)setCapsuleCornersBasedOn:(CGSize)size {
   if (self.isCapsuleShape) {
     self.layer.cornerRadius = size.height / 2;
-    self.layer.cornerCurve = kCACornerCurveCircular;
+    if (@available(iOS 13.0, *)) {
+      self.layer.cornerCurve = kCACornerCurveCircular;
+    } else {
+      // Fallback on earlier versions
+    }
   }
 }
 

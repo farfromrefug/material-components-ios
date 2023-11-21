@@ -78,6 +78,7 @@ NS_INLINE CGRect RectShift(CGRect rect, CGFloat dx, CGFloat dy) {
   return CGRectOffset(RectContract(rect, dx, dy), dx, dy);
 }
 
+API_AVAILABLE(ios(12.0))
 @interface MDCCollectionViewStyler ()
 
 /**
@@ -149,7 +150,11 @@ NS_INLINE CGRect RectShift(CGRect rect, CGFloat dx, CGFloat dy) {
     // Caching.
     _cellBackgroundCaches = [NSMutableDictionary dictionary];
 
-    _previousUserInterfaceStyle = self.collectionView.traitCollection.userInterfaceStyle;
+    if (@available(iOS 12.0, *)) {
+      _previousUserInterfaceStyle = self.collectionView.traitCollection.userInterfaceStyle;
+    } else {
+      // Fallback on earlier versions
+    }
   }
   return self;
 }
@@ -581,10 +586,14 @@ NS_INLINE CGRect RectShift(CGRect rect, CGFloat dx, CGFloat dy) {
   if (!cellBackgroundCache) {
     cellBackgroundCache = [self cellBackgroundCache];
     _cellBackgroundCaches[backgroundColor] = cellBackgroundCache;
-  } else if ([cellBackgroundCache pointerAtIndex:backgroundCacheKey] &&
-             self.previousUserInterfaceStyle ==
-                 self.collectionView.traitCollection.userInterfaceStyle) {
-    return (__bridge UIImage *)[cellBackgroundCache pointerAtIndex:backgroundCacheKey];
+  } else if (@available(iOS 12.0, *)) {
+    if ([cellBackgroundCache pointerAtIndex:backgroundCacheKey] &&
+        self.previousUserInterfaceStyle ==
+        self.collectionView.traitCollection.userInterfaceStyle) {
+      return (__bridge UIImage *)[cellBackgroundCache pointerAtIndex:backgroundCacheKey];
+    }
+  } else {
+    // Fallback on earlier versions
   }
 
   CGRect imageRect = CGRectMake(0, 0, kCellImageSize.width, kCellImageSize.height);
@@ -671,7 +680,11 @@ NS_INLINE CGRect RectShift(CGRect rect, CGFloat dx, CGFloat dy) {
   UIImage *resizableImage = [self resizableImage:image];
   [cellBackgroundCache replacePointerAtIndex:backgroundCacheKey
                                  withPointer:(__bridge void *)(resizableImage)];
-  self.previousUserInterfaceStyle = self.collectionView.traitCollection.userInterfaceStyle;
+  if (@available(iOS 12.0, *)) {
+    self.previousUserInterfaceStyle = self.collectionView.traitCollection.userInterfaceStyle;
+  } else {
+    // Fallback on earlier versions
+  }
   return resizableImage;
 }
 
