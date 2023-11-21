@@ -14,8 +14,16 @@
 
 import UIKit
 
+/// An enum that determines the direction that the parallax flow layout will be using.
+@objc(MDCParallaxFlowLayoutDirection)
+public enum ParallaxFlowLayoutDirection: Int {
+  case vertical
+}
+
 @objc(MDCParallaxFlowLayout)
 public class ParallaxFlowLayout: UICollectionViewFlowLayout {
+  private var flowLayoutDirection = ParallaxFlowLayoutDirection.vertical
+
   /// A variable that determines the size that the parallax flow layout will use.
   public var cellSize = CGSize.zero {
     didSet {
@@ -23,11 +31,29 @@ public class ParallaxFlowLayout: UICollectionViewFlowLayout {
     }
   }
 
+  /// A no parameter initializer that defaults to using the vertical flow direction.
   override public init() {
     super.init()
     minimumInteritemSpacing = 0
     minimumLineSpacing = 0
-    itemSize = UIScreen.main.bounds.size
+    flowLayoutDirection = .vertical
+    guard let collectionViewSize = collectionView?.bounds.size else {
+      itemSize = UIScreen.main.bounds.size
+      return
+    }
+    itemSize = collectionViewSize
+  }
+
+  public init(direction: ParallaxFlowLayoutDirection) {
+    super.init()
+    minimumInteritemSpacing = 0
+    minimumLineSpacing = 0
+    flowLayoutDirection = direction
+    guard let collectionViewSize = collectionView?.bounds.size else {
+      itemSize = UIScreen.main.bounds.size
+      return
+    }
+    itemSize = collectionViewSize
   }
 
   required init?(coder: NSCoder) {
@@ -35,10 +61,12 @@ public class ParallaxFlowLayout: UICollectionViewFlowLayout {
   }
 
   override public class var layoutAttributesClass: AnyClass {
-    return ParallaxLayoutAttributes.self
+    // TODO(loading): Add flowLayoutDirection check when there are more than 1 directions.
+    return ParallaxLayoutVerticalAttributes.self
   }
 
   override public func shouldInvalidateLayout(forBoundsChange newBounds: CGRect) -> Bool {
+    itemSize = newBounds.size
     return true
   }
 
@@ -49,25 +77,32 @@ public class ParallaxFlowLayout: UICollectionViewFlowLayout {
       return nil
     }
 
+    var finalLayoutAttributes: [UICollectionViewLayoutAttributes] = []
     for layoutAttributesItem in layoutAttributes {
+      let copiedLayoutAttributes = layoutAttributesItem.copy()
       if layoutAttributesItem.representedElementCategory == .cell,
-        let parallaxAttributes = layoutAttributesItem as? ParallaxLayoutAttributes
+        let parallaxAttributes = copiedLayoutAttributes as? ParallaxLayoutVerticalAttributes
       {
         if let collectionView = self.collectionView {
           let pageIndex = collectionView.contentOffset.y / collectionView.frame.size.height
           parallaxAttributes.update(with: pageIndex, for: collectionView.bounds)
+          finalLayoutAttributes.append(parallaxAttributes)
         }
       }
     }
 
-    return layoutAttributes
+    return finalLayoutAttributes
   }
 
   override public func layoutAttributesForItem(
     at indexPath: IndexPath
   ) -> UICollectionViewLayoutAttributes? {
-    let layoutAttributes = super.layoutAttributesForItem(at: indexPath)
-    guard let parallaxAttributes = layoutAttributes as? ParallaxLayoutAttributes else {
+    guard let layoutAttributes = super.layoutAttributesForItem(at: indexPath) else {
+      return nil
+    }
+    let copiedLayoutAttributes = layoutAttributes.copy()
+    guard let parallaxAttributes = copiedLayoutAttributes as? ParallaxLayoutVerticalAttributes
+    else {
       return layoutAttributes
     }
     if let collectionView = self.collectionView {

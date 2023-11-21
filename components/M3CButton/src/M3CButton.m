@@ -3,6 +3,7 @@
 #import <UIKit/UIKit.h>
 
 #import "M3CButton.h"
+#import "M3CAnimationActions.h"
 #import "MDCShadow.h"
 #import "MDCShadowsCollection.h"
 
@@ -53,6 +54,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)initCommon {
   self.animationDuration = 0.3f;
   self.minimumHeight = 44.0f;
+  self.minimumWidth = 44.0f;
   _borderColors = [NSMutableDictionary dictionary];
   _shadows = [NSMutableDictionary dictionary];
   _customInsetAvailable = NO;
@@ -98,6 +100,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)setMinimumHeight:(CGFloat)minimumHeight {
   _minimumHeight = minimumHeight;
+  [self setNeedsLayout];
+}
+
+- (void)setMinimumWidth:(CGFloat)minimumWidth {
+  _minimumWidth = minimumWidth;
   [self setNeedsLayout];
 }
 
@@ -300,9 +307,7 @@ NS_ASSUME_NONNULL_BEGIN
   if (size.height < _minimumHeight) {
     size.height = _minimumHeight;
   }
-  if (size.height > size.width) {
-    size.width = size.height;
-  }
+  size.width = MAX(MAX(size.height, size.width), _minimumWidth);
   return size;
 }
 
@@ -322,6 +327,7 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 #pragma mark - Overrides
+
 - (CGSize)intrinsicContentSize {
   [self updateInsets];
   CGSize size;
@@ -331,7 +337,6 @@ NS_ASSUME_NONNULL_BEGIN
     size = [super intrinsicContentSize];
   }
   CGSize clampToMinimumSize = [self clampToMinimumSize:size];
-  [self setCapsuleCornersBasedOn:clampToMinimumSize];
   return clampToMinimumSize;
 }
 
@@ -345,6 +350,17 @@ NS_ASSUME_NONNULL_BEGIN
   CGSize clampToMinimumSize = [self clampToMinimumSize:newSize];
   [self setCapsuleCornersBasedOn:clampToMinimumSize];
   return clampToMinimumSize;
+}
+
+#pragma mark - CALayerDelegate
+
+- (nullable id<CAAction>)actionForLayer:(CALayer *)layer forKey:(NSString *)key {
+  if (layer == self.layer && M3CIsMDCShadowPathKey(key)) {
+    // Provide a custom action for the view's layer's shadow path only.
+    return M3CShadowPathActionForLayer(layer);
+  }
+
+  return [super actionForLayer:layer forKey:key];
 }
 
 @end

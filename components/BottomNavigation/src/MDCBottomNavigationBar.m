@@ -152,8 +152,6 @@ static BOOL gEnablePerformantShadow = NO;
   }
 
   _barView = [[UIView alloc] init];
-  _barView.autoresizingMask =
-      (UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin);
   _barView.clipsToBounds = YES;
   _barView.backgroundColor = _barTintColor;
   [self addSubview:_barView];
@@ -210,6 +208,10 @@ static BOOL gEnablePerformantShadow = NO;
   [self loadConstraints];
 }
 
+- (CGFloat)barWidthForVerticalLayout {
+  return kDefaultVerticalLayoutWidth;
+}
+
 - (void)layoutSubviews {
   [super layoutSubviews];
 
@@ -217,6 +219,7 @@ static BOOL gEnablePerformantShadow = NO;
   if (self.blurEffectView) {
     self.blurEffectView.frame = standardBounds;
   }
+
   self.barView.frame = standardBounds;
 
   self.layer.shadowColor = self.shadowColor.CGColor;
@@ -244,13 +247,14 @@ static BOOL gEnablePerformantShadow = NO;
 }
 
 - (CGSize)intrinsicContentSize {
-  CGFloat height = [self calculateBarHeight];
-  CGFloat itemWidth = [self widthForItemsWhenCenteredWithAvailableWidth:CGFLOAT_MAX height:height];
-  CGSize size = CGSizeMake(itemWidth * self.items.count, height);
   if (self.enableVerticalLayout) {
-    size.width = kDefaultVerticalLayoutWidth;
+    return CGSizeMake([self barWidthForVerticalLayout], UIViewNoIntrinsicMetric);
+  } else {
+    CGFloat height = [self calculateBarHeight];
+    CGFloat itemWidth = [self widthForItemsWhenCenteredWithAvailableWidth:CGFLOAT_MAX
+                                                                   height:height];
+    return CGSizeMake(itemWidth * self.items.count, height);
   }
-  return size;
 }
 
 - (CGFloat)widthForItemsWhenCenteredWithAvailableWidth:(CGFloat)availableWidth
@@ -388,6 +392,7 @@ static BOOL gEnablePerformantShadow = NO;
     item.enableVerticalLayout = enableVerticalLayout;
   }
   [self loadConstraints];
+  [self invalidateIntrinsicContentSize];
 }
 
 - (void)setDisplayItemTitlesInVerticalLayout:(BOOL)displayItemTitlesInVerticalLayout {
@@ -559,20 +564,13 @@ static BOOL gEnablePerformantShadow = NO;
     } else if ([keyPath isEqualToString:NSStringFromSelector(@selector(titlePositionAdjustment))]) {
       itemView.titlePositionAdjustment = [newValue UIOffsetValue];
     } else if ([keyPath isEqualToString:NSStringFromSelector(@selector(largeContentSizeImage))]) {
-      if (@available(iOS 13.0, *)) {
-        itemView.largeContentImage = newValue;
-      }
+      itemView.largeContentImage = newValue;
     } else if ([keyPath isEqualToString:NSStringFromSelector(@selector(tag))]) {
       itemView.tag = [newValue integerValue];
+    } else if ([keyPath
+                   isEqualToString:NSStringFromSelector(@selector(largeContentSizeImageInsets))]) {
+      itemView.largeContentImageInsets = [newValue UIEdgeInsetsValue];
     }
-#if MDC_AVAILABLE_SDK_IOS(13_0)
-    else if ([keyPath
-                 isEqualToString:NSStringFromSelector(@selector(largeContentSizeImageInsets))]) {
-      if (@available(iOS 13.0, *)) {
-        itemView.largeContentImageInsets = [newValue UIEdgeInsetsValue];
-      }
-    }
-#endif  // MDC_AVAILABLE_SDK_IOS(13_0)
   } else {
     [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
   }
@@ -654,13 +652,10 @@ static BOOL gEnablePerformantShadow = NO;
   if ([_items isEqual:items] || _items == items) {
     return;
   }
-#if MDC_AVAILABLE_SDK_IOS(13_0)
-  if (@available(iOS 13, *)) {
-    // If clients report conflicting gesture recognizers please see proposed solution in the
-    // internal document: go/mdc-ios-bottomnavigation-largecontentvieweritem
-    [self addInteraction:[[UILargeContentViewerInteraction alloc] initWithDelegate:self]];
-  }
-#endif  // MDC_AVAILABLE_SDK_IOS(13_0)
+  // If clients report conflicting gesture recognizers please see proposed solution in the
+  // internal document: go/mdc-ios-bottomnavigation-largecontentvieweritem
+  [self addInteraction:[[UILargeContentViewerInteraction alloc] initWithDelegate:self]];
+
   // Remove existing item views from the bottom navigation so it can be repopulated with new items.
   for (MDCBottomNavigationItemView *itemView in self.itemViews) {
     [itemView removeFromSuperview];
@@ -1020,7 +1015,7 @@ static BOOL gEnablePerformantShadow = NO;
   UIPointerEffect *highlightEffect = [UIPointerHighlightEffect effectWithPreview:targetedPreview];
   CGRect hoverRect =
       [bottomNavigationView convertRect:[bottomNavigationView pointerEffectHighlightRect]
-                                 toView:self];
+                                 toView:self.itemsLayoutView];
   UIPointerShape *shape = [UIPointerShape shapeWithRoundedRect:hoverRect];
   return [UIPointerStyle styleWithEffect:highlightEffect shape:shape];
 }

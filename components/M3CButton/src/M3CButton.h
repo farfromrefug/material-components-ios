@@ -70,6 +70,11 @@ __attribute__((objc_subclassing_restricted))
 @property(nonatomic) CGFloat minimumHeight;
 
 /**
+ The minimum width of the button.
+*/
+@property(nonatomic) CGFloat minimumWidth;
+
+/**
  Is the button a capsule shape.
 */
 @property(nonatomic) BOOL isCapsuleShape;
@@ -85,6 +90,9 @@ __attribute__((objc_subclassing_restricted))
  @c titleLabel.preferredMaxLayoutWidth property set, or that the button's frame
  width is set as desired.
  Otherwise, the button will not be able to calculate a multiline layout.
+
+ @note If using @c isCapsuleShape enabled with this API be sure to consider accessibility needs as
+ the label may extend outside the cut corner.
  */
 @property(nonatomic) BOOL textCanWrap;
 

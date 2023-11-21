@@ -14,14 +14,13 @@
 
 import UIKit
 
-class ParallaxLayoutAttributes: UICollectionViewLayoutAttributes {
+class ParallaxLayoutVerticalAttributes: UICollectionViewLayoutAttributes {
   private let heightWhenShrunk = 16.0
-  private let spaceWhenShrunk = 10.0
 
   public var relativeIndexOffset: Double = 0.0
 
   override func isEqual(_ object: Any?) -> Bool {
-    if let attributes = object as? ParallaxLayoutAttributes,
+    if let attributes = object as? ParallaxLayoutVerticalAttributes,
       attributes.relativeIndexOffset == relativeIndexOffset
     {
       return super.isEqual(object)
@@ -66,7 +65,7 @@ class ParallaxLayoutAttributes: UICollectionViewLayoutAttributes {
 
       if relativeIndexOffset > 0 {
         // Going to disappear at top
-        let yWhenShrunk = yAtRest - spaceWhenShrunk - heightWhenShrunk
+        let yWhenShrunk = yAtRest - heightWhenShrunk
 
         heightRangeInterpolator = RangeInterpolator(
           from: [0.0, 1.0], to: [heightAtRest, heightWhenShrunk])

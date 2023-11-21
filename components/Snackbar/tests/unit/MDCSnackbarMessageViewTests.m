@@ -27,6 +27,8 @@
 #import "MDCSnackbarOverlayView.h"
 #pragma clang diagnostic pop
 
+NS_ASSUME_NONNULL_BEGIN
+
 static const int64_t kDispatchTimeWait = (int64_t)((CGFloat)0.2 * NSEC_PER_SEC);
 
 @interface MDCSnackbarManagerInternal (Testing)
@@ -58,9 +60,9 @@ static const int64_t kDispatchTimeWait = (int64_t)((CGFloat)0.2 * NSEC_PER_SEC);
 @end
 
 @interface MDCSnackbarMessageViewTests : XCTestCase
-@property(nonatomic, strong) MDCSnackbarManager *manager;
-@property(nonatomic, strong) FakeMDCSnackbarManagerDelegate *delegate;
-@property(nonatomic, strong) MDCSnackbarMessage *message;
+@property(nonatomic, strong, nullable) MDCSnackbarManager *manager;
+@property(nonatomic, strong, nullable) FakeMDCSnackbarManagerDelegate *delegate;
+@property(nonatomic, strong, nullable) MDCSnackbarMessage *message;
 @end
 
 @implementation MDCSnackbarMessageViewTests
@@ -376,7 +378,6 @@ static const int64_t kDispatchTimeWait = (int64_t)((CGFloat)0.2 * NSEC_PER_SEC);
 
 - (void)testManagerForwardsButtonProperties {
   // Given
-  self.manager.disabledButtonAlpha = (CGFloat)0.5;
   self.manager.uppercaseButtonTitle = NO;
   self.manager.buttonInkColor = UIColor.redColor;
   MDCSnackbarMessageAction *action = [[MDCSnackbarMessageAction alloc] init];
@@ -392,10 +393,11 @@ static const int64_t kDispatchTimeWait = (int64_t)((CGFloat)0.2 * NSEC_PER_SEC);
   [self waitForExpectationsWithTimeout:3 handler:nil];
 
   // Then
-  MDCButton *actionButton = self.manager.internalManager.currentSnackbar.actionButton;
-  XCTAssertFalse(actionButton.uppercaseTitle);
-  XCTAssertEqual(actionButton.disabledAlpha, 0.5);
-  XCTAssertEqualObjects(UIColor.redColor, actionButton.inkColor);
+  UIButton *actionButton = self.manager.internalManager.currentSnackbar.actionButton;
+  XCTAssertTrue([actionButton isKindOfClass:[MDCButton class]]);
+  MDCButton *button = (MDCButton *)actionButton;
+  XCTAssertFalse(button.uppercaseTitle);
+  XCTAssertEqualObjects(UIColor.redColor, button.inkColor);
 }
 
 - (void)testTraitCollectionDidChangeCalledWhenTraitCollectionChanges {
@@ -707,41 +709,6 @@ static const int64_t kDispatchTimeWait = (int64_t)((CGFloat)0.2 * NSEC_PER_SEC);
   MDCSnackbarMessage.usesLegacySnackbar = NO;
 }
 
-- (void)testLegacyActionButtonsMatchesActionButton {
-  // Given
-  MDCSnackbarMessageAction *action = [[MDCSnackbarMessageAction alloc] init];
-  action.title = @"Tap Me";
-  self.message.action = action;
-
-  // When
-  [self.manager showMessage:self.message];
-  XCTestExpectation *expectation = [self expectationWithDescription:@"completed"];
-  dispatch_async(dispatch_get_main_queue(), ^{
-    [expectation fulfill];
-  });
-  [self waitForExpectationsWithTimeout:3 handler:nil];
-
-  // Then
-  MDCButton *actionButton = self.manager.internalManager.currentSnackbar.actionButton;
-  NSArray *actionButtons = self.manager.internalManager.currentSnackbar.actionButtons;
-  XCTAssertEqual(actionButtons.count, 1.0);
-  XCTAssertEqual(actionButtons.firstObject, actionButton);
-}
-
-- (void)testLegacyActionButtonsReturnsEmptyArrayWhenNil {
-  // When
-  [self.manager showMessage:self.message];
-  XCTestExpectation *expectation = [self expectationWithDescription:@"completed"];
-  dispatch_async(dispatch_get_main_queue(), ^{
-    [expectation fulfill];
-  });
-  [self waitForExpectationsWithTimeout:3 handler:nil];
-
-  // Then
-  MDCButton *actionButton = self.manager.internalManager.currentSnackbar.actionButton;
-  NSArray *actionButtons = self.manager.internalManager.currentSnackbar.actionButtons;
-  XCTAssertNil(actionButton);
-  XCTAssertEqual(actionButtons.count, 0);
-}
-
 @end
+
+NS_ASSUME_NONNULL_END

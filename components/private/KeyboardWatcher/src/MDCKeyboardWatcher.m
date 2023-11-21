@@ -16,7 +16,10 @@
 
 #import <CoreGraphics/CoreGraphics.h>
 
+#import "MDCAvailability.h"
 #import "MaterialApplication.h"
+
+NS_ASSUME_NONNULL_BEGIN
 
 NSString *const MDCKeyboardWatcherKeyboardWillShowNotification =
     @"MDCKeyboardWatcherKeyboardWillShowNotification";
@@ -92,18 +95,44 @@ static MDCKeyboardWatcher *_sKeyboardWatcher;
     return;
   }
 
-  CGRect keyWindowBounds = [UIApplication mdc_safeSharedApplication].keyWindow.bounds;
-  CGRect screenBounds = [[UIScreen mainScreen] bounds];
+  UIWindow *keyWindow = nil;
+#if MDC_AVAILABLE_SDK_IOS(15_0)
+  if (@available(ios 15.0, *)) {
+    for (UIScene *scene in [UIApplication mdc_safeSharedApplication].connectedScenes) {
+      if ([scene isKindOfClass:[UIWindowScene class]] &&
+          scene.activationState == UISceneActivationStateForegroundActive) {
+        keyWindow = ((UIWindowScene *)scene).keyWindow;
+        break;
+      }
+    }
+  } else {
+    for (UIWindow *window in [UIApplication mdc_safeSharedApplication].windows) {
+      if (window.isKeyWindow) {
+        keyWindow = window;
+        break;
+      }
+    }
+  }
+#else
+  for (UIWindow *window in [UIApplication mdc_safeSharedApplication].windows) {
+    if (window.isKeyWindow) {
+      keyWindow = window;
+      break;
+    }
+  }
+#endif
+  CGRect screenBounds = keyWindow.screen.bounds;
+  // Keyboard occupies full-width of the screen under both single scene and multiple scenes.
   CGRect intersection = CGRectIntersection(screenBounds, keyboardRect);
 
   // If the extent of the keyboard is at or below the bottom of the screen it is docked.
   // This handles the case of an external keyboard on iOS8+ where the entire frame of the keyboard
   // view is used, but on the top, the input accessory section is show.
-  BOOL dockedKeyboard = CGRectGetMaxY(keyWindowBounds) <= CGRectGetMaxY(keyboardRect);
+  BOOL dockedKeyboard = CGRectGetMaxY(keyWindow.bounds) <= CGRectGetMaxY(keyboardRect);
 
   // If the bottom of the keyboard isn't at the bottom of the screen, then it is undocked, and we
   // shouldn't try to account for it.
-  if (dockedKeyboard && !CGRectIsEmpty(intersection)) {
+  if (keyWindow != nil && dockedKeyboard && !CGRectIsEmpty(intersection)) {
     self.keyboardFrame = intersection;
   } else {
     self.keyboardFrame = CGRectZero;
@@ -112,11 +141,6 @@ static MDCKeyboardWatcher *_sKeyboardWatcher;
 
 - (CGFloat)visibleKeyboardHeight {
   return CGRectGetHeight(self.keyboardFrame);
-}
-
-// TODO : keyboardOffset deprecated, delete.
-- (CGFloat)keyboardOffset {
-  return self.visibleKeyboardHeight;
 }
 
 + (NSTimeInterval)animationDurationFromKeyboardNotification:(NSNotification *)notification {
@@ -206,3 +230,5 @@ static UIViewAnimationOptions animationOptionsWithCurve(UIViewAnimationCurve ani
 }
 
 @end
+
+NS_ASSUME_NONNULL_END
