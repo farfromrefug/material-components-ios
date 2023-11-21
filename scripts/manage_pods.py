@@ -1,4 +1,3 @@
-#!/usr/bin/python
 #
 # Copyright 2016-present the Material Components for iOS authors. All Rights Reserved.
 #
@@ -89,6 +88,7 @@ def install_podfile_dir(directory, fast_install):
   cmd = ['pod', 'install', '--project-directory=%s' % directory]
   if not fast_install:
     cmd.append("--repo-update")
+  print("install_podfile_dir %s" %(cmd))
   subprocess.check_call(cmd)
 
 
@@ -101,6 +101,7 @@ def install_all_podfile_dirs(directory, fast_install, blacklist):
     blacklist: A set of directories that cannot appear in the paths of podfiles.
   """
   dirs = find_matching_dirs(directory, 'Podfile', blacklist)
+  print('install_all_podfile_dirs', directory, dirs)
   for d in dirs:
     install_podfile_dir(d, fast_install)
 
@@ -197,6 +198,8 @@ def main():
     verbose_printer = print_nothing
 
   stderr_printer = lambda x: print(x, file=sys.stderr)
+
+  print('manage_pods', args.directory, args.command)
 
   # TODO: Avoid this duplication of the COMMANDS strings.
   if args.command == 'install':
