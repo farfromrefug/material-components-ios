@@ -77,6 +77,7 @@ static BOOL _usesLegacySnackbar = NO;
   copy.automaticallyDismisses = self.automaticallyDismisses;
   copy.presentationHostViewOverride = self.presentationHostViewOverride;
   copy.shouldDismissOnOverlayTap = self.shouldDismissOnOverlayTap;
+  copy.usesLegacyDismissalBehavior = self.usesLegacyDismissalBehavior;
 
   // Unfortunately there's not really a concept of 'copying' a block (in the same way you would copy
   // a string, for example). A block's pointer is immutable once it is created and copied to the
@@ -106,7 +107,7 @@ static BOOL _usesLegacySnackbar = NO;
   return [description copy];
 }
 
-#pragma mark Text
+#pragma mark - Text
 
 - (void)setText:(NSString *)text {
   NSDictionary *attributes = @{};
@@ -124,6 +125,19 @@ static BOOL _usesLegacySnackbar = NO;
 
 - (NSString *)text {
   return [self.attributedText string];
+}
+
+#pragma mark - Action
+
+- (void)setAction:(MDCSnackbarMessageAction *)action {
+  if (action) {
+    NSAssert(action.title.length > 0, @"Snackbar actions must have a non-empty title.");
+  }
+  if (action.title.length == 0) {
+    _action = nil;
+  } else {
+    _action = action;
+  }
 }
 
 #pragma mark - Duration
@@ -234,6 +248,12 @@ static BOOL _usesLegacySnackbar = NO;
   copy.accessibilityHint = self.accessibilityHint;
 
   return copy;
+}
+
+- (void)setTitle:(NSString *)title {
+  if (title.length > 0) {
+    _title = title;
+  }
 }
 
 @end

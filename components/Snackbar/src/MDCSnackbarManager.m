@@ -264,7 +264,7 @@ static NSString *const kAllMessagesCategory = @"$$___ALL_MESSAGES___$$";
   // only if the user isn't running VoiceOver.
   [self.overlayView
       showSnackbarView:snackbarView
-              animated:YES
+              animated:self.manager.isMessageAnimationEnabled
             completion:^{
               if ([self snackbarAllowsFocus:snackbarView]) {
                 UIAccessibilityPostNotification(self.manager.focusAccessibilityNotification,
@@ -336,7 +336,7 @@ static NSString *const kAllMessagesCategory = @"$$___ALL_MESSAGES___$$";
   }
 
   [self.overlayView
-      dismissSnackbarViewAnimated:YES
+      dismissSnackbarViewAnimated:self.manager.isMessageAnimationEnabled
                        completion:^{
                          self.overlayView.hidden = YES;
                          [self deactivateOverlay:self.overlayView];
@@ -385,11 +385,15 @@ static NSString *const kAllMessagesCategory = @"$$___ALL_MESSAGES___$$";
 }
 
 - (BOOL)isSnackbarTransient:(MDCSnackbarMessageView *)snackbarView {
-  if ([self isVoiceOverRunning]) {
+  if (snackbarView.message.usesLegacyDismissalBehavior) {
+    if ([self isVoiceOverRunning]) {
+      return ![snackbarView shouldWaitForDismissalDuringVoiceover];
+    } else {
+      return YES;
+    }
+  } else {
     return ![snackbarView shouldWaitForDismissalDuringVoiceover];
   }
-
-  return YES;
 }
 
 #pragma mark - Overlay Activation
@@ -634,6 +638,7 @@ static NSString *const kAllMessagesCategory = @"$$___ALL_MESSAGES___$$";
     _mdc_overrideBaseElevation = -1;
     _focusAccessibilityNotification = UIAccessibilityLayoutChangedNotification;
     _shouldShowMessageWhenVoiceOverIsRunning = YES;
+    _messageAnimationEnabled = YES;
     _enableDismissalAccessibilityAffordance = NO;
     _usesGM3Shapes = NO;
   }

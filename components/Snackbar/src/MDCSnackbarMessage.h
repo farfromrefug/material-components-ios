@@ -99,8 +99,11 @@ extern NSString *__nonnull const MDCSnackbarMessageBoldAttributeName;
 /**
  Optional button to show along with the rest of the message.
 
- A MDCSnackbarMessageAction is displayed as a button on the Snackbar. If no action is set no button
+ A MDCSnackbarMessageAction is displayed as a button on the Snackbar. If no action is set, no button
  will appear on the Snackbar.
+
+ Attempting to set this property to an action with a nil or empty title will cause this property to
+ be nil.
  */
 @property(nonatomic, strong, nullable) MDCSnackbarMessageAction *action;
 
@@ -235,12 +238,20 @@ extern NSString *__nonnull const MDCSnackbarMessageBoldAttributeName;
  Whether the Snackbar message is transient and automatically dismisses after the provided @c
  duration time or is not transient and will not dismiss automatically.
 
- @note: If VoiceOver is turned on, a snackbar will not automatically dismiss if the snackbar has an
- action, regardless of this property.
+ @note: If the snackbar has an action, it will not dismiss automatically, regardless of the value of
+ this property, unless @c usesLegacyDismissalBehavior is enabled.
 
  Defaults to YES.
  */
 @property(nonatomic) BOOL automaticallyDismisses;
+
+/**
+ Allows the snackbar to auto-dismiss even if it has an action. Default is NO.
+
+ This property has no effect on snackbars without an action. Using the legacy behavior for snackbars
+ with an action is not GAR-compliant (go/GAR-mobile#timeout).
+ */
+@property(nonatomic) BOOL usesLegacyDismissalBehavior;
 
 /**
  MDCSnackbarManager.defaultManager will display the snackbar message in this view.
@@ -273,6 +284,8 @@ extern NSString *__nonnull const MDCSnackbarMessageBoldAttributeName;
 
 /**
  The title text on the button.
+
+ If this property is set to nil or an empty string, it will not be changed from its current value.
  */
 @property(nonatomic, copy, nullable) NSString *title;
 

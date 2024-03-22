@@ -106,7 +106,20 @@ public final class M3CTextField: UIView, M3CTextInput {
     }
   }
 
+  /// Proxy property for the underlying text field's `attributedPlaceholder` property.
+  @objc public var attributedPlaceholder: NSAttributedString? {
+    get {
+      return textContainer.attributedPlaceholder
+    }
+    set {
+      textContainer.attributedPlaceholder = newValue
+    }
+  }
+
   /// Proxy property for the underlying text field's `placeholder` property.
+  ///
+  /// Note that `attributedPlaceholder` is prioritized to be displayed instead of `placeholder`
+  /// when both properties are not nil.
   @objc public var placeholder: String? {
     get {
       return textContainer.placeholder
@@ -158,42 +171,63 @@ public final class M3CTextField: UIView, M3CTextInput {
   @objc(setBackgroundColor:forState:)
   public func setBackgroundColor(_ color: UIColor?, for state: UIControl.State) {
     backgroundColors[state] = color
+    if state == controlState {
+      applyAllColors()
+    }
   }
 
   /// Sets the border color for a specific UIControlState.
   @objc(setBorderColor:forState:)
   public func setBorderColor(_ color: UIColor?, for state: UIControl.State) {
     borderColors[state] = color
+    if state == controlState {
+      applyAllColors()
+    }
   }
 
   /// Sets the input color for a specific UIControlState.
   @objc(setInputColor:forState:)
   public func setInputColor(_ color: UIColor?, for state: UIControl.State) {
     inputColors[state] = color
+    if state == controlState {
+      applyAllColors()
+    }
   }
 
   /// Sets the supporting label color for a specific UIControlState.
   @objc(setSupportingLabelColor:forState:)
   public func setSupportingLabelColor(_ color: UIColor?, for state: UIControl.State) {
     supportingLabelColors[state] = color
+    if state == controlState {
+      applyAllColors()
+    }
   }
 
   /// Sets the tint color for a specific UIControlState.
   @objc(setTintColor:forState:)
   public func setTintColor(_ color: UIColor?, for state: UIControl.State) {
     tintColors[state] = color
+    if state == controlState {
+      applyAllColors()
+    }
   }
 
   /// Sets the title label color for a specific UIControlState.
   @objc(setTitleLabelColor:forState:)
   public func setTitleLabelColor(_ color: UIColor?, for state: UIControl.State) {
     titleLabelColors[state] = color
+    if state == controlState {
+      applyAllColors()
+    }
   }
 
   /// Sets the trailing label color for a specific UIControlState.
   @objc(setTrailingLabelColor:forState:)
   public func setTrailingLabelColor(_ color: UIColor?, for state: UIControl.State) {
     trailingLabelColors[state] = color
+    if state == controlState {
+      applyAllColors()
+    }
   }
 
   override public func layoutSubviews() {
@@ -203,6 +237,7 @@ public final class M3CTextField: UIView, M3CTextInput {
     // This is to fix an issue in RTL, where an empty trailing label affects the position of the
     // leading label when M3CTextField is placed inside of a UICollectionViewCell.
     trailingLabel.isHidden = (trailingLabel.text ?? "").isEmpty
+    hideEmptyLabels()
   }
 
   private func configure(_ textField: UITextField) {
