@@ -256,6 +256,7 @@ static UIScrollView *MDCBottomSheetGetPrimaryScrollView(UIViewController *viewCo
                            }
                          }];
 
+  // TODO: this should happen on animation complete
   if ([strongDelegate
           respondsToSelector:@selector(bottomSheetPresentationControllerDidDismissBottomSheet:)]) {
     [strongDelegate bottomSheetPresentationControllerDidDismissBottomSheet:self];
