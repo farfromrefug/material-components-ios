@@ -53,8 +53,4 @@ OBJC_EXTERN NSString *const MDCKeyboardWatcherKeyboardWillChangeFrameNotificatio
 
 @end
 
-<<<<<<< HEAD
-//API_DEPRECATED_END
-=======
 NS_ASSUME_NONNULL_END
->>>>>>> 5a58a5055d83453cf65da04fe2c09d20656ddd86
