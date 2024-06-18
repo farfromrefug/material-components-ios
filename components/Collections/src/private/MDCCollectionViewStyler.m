@@ -22,6 +22,13 @@
 
 #include <tgmath.h>
 
+#if defined(TARGET_OS_VISION) && TARGET_OS_VISION
+// For code review, use the review queue listed in go/material-visionos-review.
+#define IS_VISIONOS 1
+#else
+#define IS_VISIONOS 0
+#endif
+
 typedef NS_OPTIONS(NSUInteger, BackgroundCacheKey) {
   BackgroundCacheKeyFlat = 0,
   BackgroundCacheKeyTop = 1 << 0,
@@ -134,8 +141,16 @@ API_AVAILABLE(ios(12.0))
     // Cell separator defaults.
     _separatorColor = MDCPalette.greyPalette.tint300;
     _separatorInset = UIEdgeInsetsZero;
+
+#if IS_VISIONOS
+    UITraitCollection *current = [UITraitCollection currentTraitCollection];
+    CGFloat scale = current ? [current displayScale] : 1.0;
+    _separatorLineHeight = kCollectionViewCellSeparatorDefaultHeightInPixels / scale;
+#else
     _separatorLineHeight =
         kCollectionViewCellSeparatorDefaultHeightInPixels / [[UIScreen mainScreen] scale];
+#endif
+
     _shouldHideSeparators = NO;
 
     // Grid defaults.
@@ -306,7 +321,13 @@ API_AVAILABLE(ios(12.0))
   if ([self drawShadowForCellWithIsCardStye:isCardStyle
                                isGroupStyle:isGroupedStyle
                               isHighlighted:isHighlighted]) {
+#if IS_VISIONOS
+    UITraitCollection *current = [UITraitCollection currentTraitCollection];
+    CGFloat scale = current ? [current displayScale] : 1.0;
+    CGFloat mainScreenScale = scale;
+#else
     CGFloat mainScreenScale = [[UIScreen mainScreen] scale];
+#endif
     if (mainScreenScale > (CGFloat)2.1) {
       insets = kCollectionViewCellContentInsetsRetina3x;
     } else if (mainScreenScale > (CGFloat)1.1) {
@@ -693,7 +714,13 @@ API_AVAILABLE(ios(12.0))
 // We want to draw the borders and shadows on single retina-pixel boundaries if possible, but
 // we need to avoid doing this on non-retina devices because it'll look blurry.
 - (CGFloat)minPixelOffset {
+#if IS_VISIONOS
+  UITraitCollection *current = [UITraitCollection currentTraitCollection];
+  CGFloat scale = current ? [current displayScale] : 1.0;
+  return 1 / scale;
+#else
   return 1 / [[UIScreen mainScreen] scale];
+#endif
 }
 
 - (UIImage *)resizableImage:(UIImage *)image {
