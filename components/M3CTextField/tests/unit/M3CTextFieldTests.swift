@@ -237,6 +237,70 @@ class M3CTextFieldTests: XCTestCase {
 
     XCTAssertEqual(sutTextField.trailingLabel.textColor, customColor)
   }
+
+  /// Tests that `rightViewMode` is set to `.never` when `rightView` is not nil and input text is
+  /// changed to an empty string.
+  func testRightViewModeIsChangedToNeverWhenRightViewIsSetAndTextIsEmpty() {
+    sutTextField.configureClearButton(tintColor: .green)
+    sutTextField.rightView = sutTextField.clearButton
+    sutTextField.rightViewMode = .always
+    sutTextField.text = "test"
+    sutTextField.textFieldEditingChanged(textField: sutTextContainer)
+    XCTAssertEqual(sutTextField.rightViewMode, .always)
+
+    sutTextContainer.text = ""
+    sutTextField.textFieldEditingChanged(textField: sutTextContainer)
+
+    XCTAssertEqual(sutTextField.rightViewMode, .never)
+  }
+
+  /// Tests that the current `rightViewMode` is unchanged when `rightView` is not nil and input
+  /// text is changed to a non-empty string.
+  func testRightViewModeIsUnchangedWhenRightViewIsSetAndTextIsNotEmpty() {
+    sutTextField.text = ""
+    sutTextField.textFieldEditingChanged(textField: sutTextContainer)
+    XCTAssertNil(sutTextField.clearButton)
+    XCTAssertNil(sutTextField.rightView)
+    sutTextField.rightViewMode = .always
+
+    sutTextField.configureClearButton(tintColor: .green)
+    sutTextField.rightView = sutTextField.clearButton
+    sutTextField.text = "test"
+    sutTextField.textFieldEditingChanged(textField: sutTextContainer)
+
+    XCTAssertEqual(sutTextField.rightViewMode, .always)
+  }
+
+  /// Tests that each proxy property's setters and getters correctly forward between an instance of
+  /// M3CTextField and its underlying UITextField.
+  func testProxySettersAndGettersAreForwardedCorrectly() {
+    XCTAssertNil(sutTextContainer.delegate)
+    XCTAssertNil(sutTextContainer.leftView)
+    XCTAssertNil(sutTextContainer.rightView)
+    XCTAssertNil(sutTextContainer.attributedPlaceholder)
+    XCTAssertNil(sutTextContainer.placeholder)
+    XCTAssertEqual(sutTextContainer.text, "")
+
+    sutTextField.delegate = self
+    sutTextField.leftView = UIView()
+    sutTextField.rightView = UIView()
+    sutTextField.attributedPlaceholder = NSAttributedString()
+    sutTextField.placeholder = "placeholder"
+    sutTextField.text = "test"
+    XCTAssertNotNil(sutTextContainer.delegate)
+    XCTAssertNotNil(sutTextContainer.leftView)
+    XCTAssertNotNil(sutTextContainer.rightView)
+    XCTAssertNotNil(sutTextContainer.attributedPlaceholder)
+    XCTAssertNotNil(sutTextContainer.placeholder)
+    XCTAssertNotNil(sutTextContainer.text)
+
+    XCTAssertEqual(sutTextField.delegate as? XCTestCase, sutTextContainer.delegate as? XCTestCase)
+    XCTAssertEqual(sutTextField.leftView, sutTextContainer.leftView)
+    XCTAssertEqual(sutTextField.rightView, sutTextContainer.rightView)
+    XCTAssertEqual(sutTextField.attributedPlaceholder, sutTextContainer.attributedPlaceholder)
+    XCTAssertEqual(sutTextField.placeholder, sutTextContainer.placeholder)
+    XCTAssertEqual(sutTextField.text, sutTextContainer.text)
+  }
 }
 
 // MARK: - Test Assertion Helpers
@@ -302,3 +366,7 @@ extension M3CTextFieldTests {
     }
   }
 }
+
+// MARK: - Testing Extensions
+
+extension M3CTextFieldTests: UITextFieldDelegate {}

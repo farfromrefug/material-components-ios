@@ -405,7 +405,7 @@ extension M3CTextField {
 // MARK: - UIControl.editingChanged
 @available(iOS 13.0, *)
 extension M3CTextField {
-  @objc private func textFieldEditingChanged(textField: UITextField) {
+  @objc func textFieldEditingChanged(textField: UITextField) {
     // `clearButton` should never be visible when there is no input text.
     if let clearButton, rightView == clearButton {
       let textCount = textField.text?.count ?? 0
