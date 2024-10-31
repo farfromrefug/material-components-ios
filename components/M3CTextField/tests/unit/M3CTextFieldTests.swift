@@ -301,6 +301,32 @@ class M3CTextFieldTests: XCTestCase {
     XCTAssertEqual(sutTextField.placeholder, sutTextContainer.placeholder)
     XCTAssertEqual(sutTextField.text, sutTextContainer.text)
   }
+
+  /// Tests that `layoutSubviews` hides a visible trailing label with an empty `text`.
+  func testLayoutSubviewsHidesEmptyTrailingLabel() {
+    let trailingLabel = UILabel()
+    trailingLabel.text = ""
+    trailingLabel.isHidden = false
+    sutTextField.trailingLabel = trailingLabel
+    XCTAssertFalse(trailingLabel.isHidden)
+
+    sutTextField.layoutSubviews()
+
+    XCTAssertTrue(trailingLabel.isHidden)
+  }
+
+  /// Tests that `layoutSubviews` shows a hidden trailing label with a populated `text`.
+  func testLayoutSubviewsShowsTrailingLabelWithText() {
+    let trailingLabel = UILabel()
+    trailingLabel.text = "Trailing"
+    trailingLabel.isHidden = true
+    sutTextField.trailingLabel = trailingLabel
+    XCTAssertTrue(trailingLabel.isHidden)
+
+    sutTextField.layoutSubviews()
+
+    XCTAssertFalse(trailingLabel.isHidden)
+  }
 }
 
 // MARK: - Test Assertion Helpers
