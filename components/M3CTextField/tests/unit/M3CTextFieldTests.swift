@@ -327,6 +327,22 @@ class M3CTextFieldTests: XCTestCase {
 
     XCTAssertFalse(trailingLabel.isHidden)
   }
+
+  /// Tests that the border color is updated after a trait collection change.
+  func testTraitCollectionChangeToDifferentTraitCollectionUpdatesSubviews() {
+    let lightTraitCollection = UITraitCollection(userInterfaceStyle: .light)
+    let darkTraitCollection = UITraitCollection(userInterfaceStyle: .dark)
+    let initialBorderColor = expectedColor(for: .normal).cgColor
+    let expectedNewBorderColor = expectedColor(for: .error).cgColor
+    sutTextField.traitCollectionDidChange(lightTraitCollection)
+    sutTextField.isInErrorState = true
+    sutTextField.borderColors = testColorValues
+    sutTextContainer.layer.borderColor = initialBorderColor
+
+    sutTextField.traitCollectionDidChange(darkTraitCollection)
+
+    XCTAssertEqual(sutTextContainer.layer.borderColor, expectedNewBorderColor)
+  }
 }
 
 // MARK: - Test Assertion Helpers
