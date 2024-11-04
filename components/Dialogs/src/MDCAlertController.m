@@ -92,6 +92,10 @@ static NSString *const kMaterialDialogsBundle = @"MaterialDialogs.bundle";
       [self.title isEqualToString:anotherAction.title] && self.emphasis == anotherAction.emphasis;
 }
 
+- (NSUInteger)hash {
+  return self.title.hash ^ self.emphasis;
+}
+
 @end
 
 @interface MDCAlertController () <UITextViewDelegate>
@@ -736,10 +740,13 @@ static NSString *const kMaterialDialogsBundle = @"MaterialDialogs.bundle";
 }
 
 - (void)viewDidLayoutSubviews {
+  [super viewDidLayoutSubviews];
   // Increments the counter to account for an additional layout pass.
   self.layoutPassCounter += 1;
   // Abort if the layout pass counter is too high.
   if (self.layoutPassCounter > MAX_LAYOUT_PASSES) {
+    // Resets counter.
+    self.layoutPassCounter = 0;
     return;
   }
   // Recalculate preferredContentSize and potentially the view frame.
@@ -768,8 +775,6 @@ static NSString *const kMaterialDialogsBundle = @"MaterialDialogs.bundle";
 
 - (void)viewWillLayoutSubviews {
   [super viewWillLayoutSubviews];
-  // Resets counter as this function is called at the beginning of a new layout cycle.
-  self.layoutPassCounter = 0;
 
   // Recalculate preferredSize, which is based on width available, if the viewSize has changed.
   if (CGRectGetWidth(self.view.bounds) != _previousLayoutSize.width ||

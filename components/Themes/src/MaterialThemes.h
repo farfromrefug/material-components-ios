@@ -13,6 +13,5 @@
 // limitations under the License.
 
 #import "MDCColorScheme.h"  // IWYU pragma: keep
-#import "MDCFontScheme.h"  // IWYU pragma: keep
 #import "MDCTonalColorScheme.h"  // IWYU pragma: keep
 #import "MDCTonalPalette.h"  // IWYU pragma: keep
