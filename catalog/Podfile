@@ -5,19 +5,22 @@ project 'MDCCatalog.xcodeproj'
 # install! 'cocoapods', :disable_input_output_paths => true
 
 target "MDCCatalog" do
-  platform :ios, '11.0'
+  platform :ios, '13.0'
   project 'MDCCatalog.xcodeproj'
+  pod "MDFTextAccessibility", :git => 'https://github.com/nativescript-community/material-text-accessibility-ios.git'
+  pod "MDFInternationalization", :git => 'https://github.com/nativescript-community/material-internationalization-ios.git'
+  pod "MotionAnimator", :git => 'https://github.com/nativescript-community/motion-animator-objc.git'
+  pod "MotionInterchange", :git => 'https://github.com/nativescript-community/motion-interchange-objc.git'
+  pod "CatalogByConvention", :git => 'https://github.com/nativescript-community/cocoapods-catalog-by-convention.git'
   pod 'MaterialComponentsExamples', :path => '../'
   pod 'MaterialComponents', :path => '../', :testspecs => [
     'ActionSheet/UnitTests',
     'ActivityIndicator/UnitTests',
-    'AnimationTiming/UnitTests',
     'AppBar/UnitTests',
     'Banner/UnitTests',
     'BottomAppBar/UnitTests',
     'BottomNavigation/UnitTests',
     'BottomNavigation+BottomNavigationController/UnitTests',
-    'BottomNavigation+Theming/UnitTests',
     'BottomSheet/UnitTests',
     'ButtonBar/UnitTests',
     'Buttons/UnitTests',
@@ -55,16 +58,13 @@ target "MDCCatalog" do
     'schemes/Container/UnitTests',
     'schemes/Shape/UnitTests',
     'schemes/Typography/UnitTests',
-    'ShadowElevations/UnitTests',
     'ShadowLayer/UnitTests',
     'ShapeLibrary/UnitTests',
     'Shapes/UnitTests',
     'Slider/UnitTests',
     'Snackbar/UnitTests',
     'Tabs/UnitTests',
-    'Tabs+Theming/UnitTests',
     'Tabs+TabBarView/UnitTests',
-    'TextFields/UnitTests',
     'TextControls+BaseTextAreas/UnitTests',
     'TextControls+BaseTextFields/UnitTests',
     'TextControls+FilledTextAreas/UnitTests',
@@ -81,27 +81,34 @@ target "MDCCatalog" do
   pod 'MaterialComponentsSnapshotTests', :path => '../', :testspecs => [
     'SnapshotTests'
   ]
-  pod 'CatalogByConvention', "~> 2.5"
   pod 'MaterialCatalog', :path => 'MaterialCatalog/'
 
   use_frameworks!
 end
 
 target "MDCActionExtension" do
-  platform :ios, '11.0'
+  platform :ios, '13.0'
   project 'MDCCatalog.xcodeproj'
   pod 'MaterialComponentsExamples', :path => '../'
   pod 'MaterialComponents', :path => '../'
-  pod 'CatalogByConvention', "~> 2.5"
+  pod "MDFTextAccessibility", :git => 'https://github.com/nativescript-community/material-text-accessibility-ios.git'
+  pod "MDFInternationalization", :git => 'https://github.com/nativescript-community/material-internationalization-ios.git'
+  pod "MotionAnimator", :git => 'https://github.com/nativescript-community/motion-animator-objc.git'
+  pod "MotionInterchange", :git => 'https://github.com/nativescript-community/motion-interchange-objc.git'
+  pod "CatalogByConvention", :git => 'https://github.com/nativescript-community/cocoapods-catalog-by-convention.git'
   pod 'MaterialCatalog', :path => 'MaterialCatalog/'
 
   use_frameworks!
 end
 
 target "MDCDragons" do
-  platform :ios, '11.0'
+  platform :ios, '13.0'
   project 'MDCDragons.xcodeproj'
-  pod 'CatalogByConvention', "~> 2.5"
+  pod "MDFTextAccessibility", :git => 'https://github.com/nativescript-community/material-text-accessibility-ios.git'
+  pod "MDFInternationalization", :git => 'https://github.com/nativescript-community/material-internationalization-ios.git'
+  pod "MotionAnimator", :git => 'https://github.com/nativescript-community/motion-animator-objc.git'
+  pod "MotionInterchange", :git => 'https://github.com/nativescript-community/motion-interchange-objc.git'
+  pod "CatalogByConvention", :git => 'https://github.com/nativescript-community/cocoapods-catalog-by-convention.git'
   pod 'MaterialComponents', :path => '../'
   pod 'MaterialComponentsExamples', :path => '../'
   use_frameworks!
