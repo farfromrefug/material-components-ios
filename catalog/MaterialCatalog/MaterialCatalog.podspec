@@ -9,6 +9,7 @@ Pod::Spec.new do |s|
   s.source       = { :git => "https://github.com/material-components/material-components-ios.git", :tag => "v#{s.version}" }
   s.source_files  = "*.{h,m}"
   s.public_header_files = "*.h"
+  s.platform     = :ios, '13.0'
 
   s.dependency "MaterialComponents/Themes"
 end

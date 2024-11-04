@@ -37,10 +37,12 @@ class ChipsFieldDeleteEnabledViewController: UIViewController, MDCChipFieldDeleg
     view.backgroundColor = containerScheming.colorScheme.backgroundColor
     chipField.frame = .zero
     chipField.delegate = self
-    let placeholderAttributes: [NSAttributedString.Key: Any] = [
-      .foregroundColor: UIColor.placeholderText
-    ]
-    chipField.placeholderAttributes = placeholderAttributes
+    if #available(iOSApplicationExtension 13.0, *) {
+      let placeholderAttributes: [NSAttributedString.Key: Any] = [
+        .foregroundColor: UIColor.placeholderText
+      ]
+      chipField.placeholderAttributes = placeholderAttributes
+    }
     chipField.placeholder = "This is a chip field."
     chipField.backgroundColor = containerScheming.colorScheme.surfaceColor
     view.addSubview(chipField)

@@ -7,14 +7,14 @@ Pod::Spec.new do |s|
   s.homepage     = "https://github.com/material-components/material-components-ios"
   s.license      = 'Apache 2.0'
   s.source       = { :git => "https://github.com/material-components/material-components-ios.git", :tag => "v#{s.version}" }
-  s.platform     = :ios, '12.0'
+  s.platform     = :ios, '13.0'
   s.requires_arc = true
   s.source_files = ['components/*/examples/*.{h,m,swift}', 'components/*/examples/supplemental/*.{h,m,swift}', 'components/private/*/examples/*.{h,m,swift}', 'components/schemes/*/examples/*.{h,m,swift}', 'components/schemes/*/examples/supplemental/*.{h,m,swift}']
 
   s.resources = ['components/*/examples/resources/*', 'components/private/*/examples/resources/*', 'components/schemes/*/examples/resources/*']
   s.dependency 'MaterialComponents'
   s.dependency 'MaterialComponents/Buttons+ButtonThemer'
-	s.dependency 'MDFInternationalization', "~> 3.0"
+	s.dependency 'MDFInternationalization'
 	s.dependency 'MDFTextAccessibility'
   s.public_header_files = ['components/*/examples/*.h', 'components/*/examples/supplemental/*.h', 'components/private/*/examples/*.h', 'components/schemes/*/examples/*.h']
 end
